@@ -24,6 +24,15 @@ namespace GGJ.Rooms
 			return room == ConnectedRooms.Item1 ? ConnectedRooms.Item2 : ConnectedRooms.Item1;
 		}
 
+		private void OnTriggerEnter(Collider other)
+		{
+			if (IsLocked)
+				return;
+
+			ConnectedRooms.Item1.gameObject.SetActive(true);
+			ConnectedRooms.Item2.gameObject.SetActive(true);
+		}
+
 		private void OnUnlock()
 		{
 			if (ConnectedRooms.Item1 == null)
