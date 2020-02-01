@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace DefaultNamespace
+namespace GGJ
 {
 	public class BaseBehaviour : MonoBehaviour
 	{

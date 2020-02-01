@@ -1,21 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIKeyDisplay : MonoBehaviour
+namespace GGJ.Runtime.UI
 {
-    public Text KeyLabel { get; private set; }
-    public void Awake()
+    public class UIKeyDisplay : BaseBehaviour
     {
-        KeyLabel = transform.Find("KeyTextLabel").GetComponent<Text>();
     }
-
-    public void Init(char key)
-    {
-        KeyLabel.text = key.ToString();
-    }
-
-    
 }

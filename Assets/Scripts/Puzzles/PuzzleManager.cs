@@ -1,20 +1,32 @@
-using UnityEngine;
+using System;
+using GGJ.Puzzles.Data;
 
-namespace Puzzles
+namespace GGJ.Puzzles
 {
     public class PuzzleManager
     {
-        public PuzzleManager()
+        public void StartPuzzle(PuzzleType type, float difficulty)
         {
-            
+            var puzzleData = CreatePuzzleData(type, difficulty);
+            OnPuzzleStarted?.Invoke(puzzleData);
         }
 
-        public void OnPuzzleStarted(PuzzleType type, float difficulty)
+        private IPuzzleData CreatePuzzleData(PuzzleType type, float difficulty)
         {
-            switch (type)
-            {
-                type
-            }
+            if (type == PuzzleType.KeySequence)
+                return new KeySequencePuzzleData(difficulty);
+
+
+            throw new Exception("wtf");
+        }
+
+        public Action<IPuzzleData> OnPuzzleStarted { get; set; }
+
+        public Action OnPuzzleFailed { get; set; }
+
+        public void PuzzleFailed()
+        {
+            OnPuzzleFailed?.Invoke();
         }
     }
 
@@ -22,5 +34,4 @@ namespace Puzzles
     {
         KeySequence
     }
-    
 }

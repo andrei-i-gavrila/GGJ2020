@@ -1,14 +1,22 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using System;
+using GGJ.Puzzles;
+using GGJ.Puzzles.Data;
 
-
-
-public class KeySequencePuzzle
+namespace Puzzles
 {
-    public List<char> KeySequence = new List<char>();
-    public float CompletionTime = 5f;
-    
-        
-    
+    public class KeySequencePuzzle: IPuzzle<KeySequencePuzzleData>
+    {
+        public void StartPuzzle(KeySequencePuzzleData data)
+        {
+            
+        }
+
+        public Action<KeySequencePuzzleData> OnPuzzleStarted { get; set; }
+
+        public Action<bool> OnPuzzleEnd { get; set; }
+        public KeySequencePuzzleData CreateData(float difficulty)
+        {
+            return new KeySequencePuzzleData(difficulty);
+        }
+    }
 }
