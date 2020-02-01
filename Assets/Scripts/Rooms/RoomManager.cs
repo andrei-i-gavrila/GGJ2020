@@ -9,7 +9,7 @@ namespace GGJ.Rooms
 	{
 		private static int roomNumber = 1;
 		public Room CurrentRoom { get; private set; }
-		public Room PreviouseRoom { get; private set; }
+		public Room PreviousRoom { get; private set; }
 		public Action<Room, Room> OnRoomEntered { get; private set; }
 		public Transform EntrancesParent { get; private set; }
 		private HashSet<Entrance> entrances = new HashSet<Entrance>();
@@ -47,25 +47,25 @@ namespace GGJ.Rooms
 
 		public void CharacterEnteredInRoom(Room newRoom)
 		{
-			if (PreviouseRoom != newRoom)
+			if (PreviousRoom != newRoom)
 			{
-				PreviouseRoom?.gameObject.SetActive(false);
+				PreviousRoom.gameObject.SetActive(false);
 			}
 
-			PreviouseRoom = CurrentRoom;
+			PreviousRoom = CurrentRoom;
 			CurrentRoom = newRoom;
 			UpdateEntrancesState();
-			OnRoomEntered?.Invoke(CurrentRoom, PreviouseRoom);
+			OnRoomEntered?.Invoke(CurrentRoom, PreviousRoom);
 		}
 
 		private void UpdateEntrancesState()
 		{
 			foreach (var entrance in entrances)
 			{
-				if (!entrance.gameObject.activeSelf && (entrance.IsRoomInThisEntrance(CurrentRoom, false) || entrance.IsRoomInThisEntrance(PreviouseRoom, false)))
+				if (!entrance.gameObject.activeSelf && (entrance.IsRoomInThisEntrance(CurrentRoom, false) || entrance.IsRoomInThisEntrance(PreviousRoom, false)))
 					entrance.gameObject.SetActive(true);
 
-				if (!entrance.IsRoomInThisEntrance(CurrentRoom, false) && !entrance.IsRoomInThisEntrance(PreviouseRoom, false))
+				if (!entrance.IsRoomInThisEntrance(CurrentRoom, false) && !entrance.IsRoomInThisEntrance(PreviousRoom, false))
 					entrance.gameObject.SetActive(false);
 			}
 		}
@@ -80,7 +80,7 @@ namespace GGJ.Rooms
 			EntrancesParent = new GameObject("Entrances").transform;
 			roomPrefab = Resources.Load<Room>(Paths.PREFABS + "Room");
 			entrancePrefab = Resources.Load<Entrance>(Paths.PREFABS + "Entrance");
-			roomsParent = GameObject.Find("Rooms").transform ?? new GameObject("Rooms").transform;
+			roomsParent = GameObject.Find("Rooms")?.transform ?? new GameObject("Rooms").transform;
 		}
 	}
 }
