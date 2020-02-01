@@ -9,13 +9,8 @@ namespace GGJ.Rooms
 		public string RoomId { get; set; }
 		public HashSet<Direction> Directions { get; set; } = new HashSet<Direction>();
 		public HashSet<Direction> CompatibleDirections { get; set; } = new HashSet<Direction>();
-
 		private List<EntranceSpawnPoint> entrancePositions = new List<EntranceSpawnPoint>();
-
-		public void SetupRoom()
-		{
-			var dificulty = Game.CurrentDificulty;
-		}
+		private List<ConsoleAvailablePosition> possibleConsolePositions = new List<ConsoleAvailablePosition>();
 
 		public Transform GetEntranceForDirection(Direction direction)
 		{
@@ -38,6 +33,7 @@ namespace GGJ.Rooms
 		private void Awake()
 		{
 			InitializeEntrances();
+			possibleConsolePositions = gameObject.GetComponentsInChildren<ConsoleAvailablePosition>().ToList();
 		}
 
 		private void Start()
@@ -46,6 +42,12 @@ namespace GGJ.Rooms
 		}
 
 		private void Initialize()
+		{
+			ManageEntrances();
+			CreateConsoles();
+		}
+
+		private void ManageEntrances()
 		{
 			//Get the entrance for this Room
 			var entrances = Game.Instance.RoomManager.GetEntrancesForRoom(this);
@@ -68,6 +70,27 @@ namespace GGJ.Rooms
 			{
 				Game.RoomManager.GenerateEntrance(entranceSpawner.transform.position, this, entranceSpawner.Direction);
 			}
+		}
+
+		private void CreateConsoles()
+		{
+			if (possibleConsolePositions == null || possibleConsolePositions.Count == 0)
+			{
+				Debug.LogError("There are no possible console positions for room " + RoomId);
+				return;
+			}
+			var numberOfConsoles = Mathf.Clamp(Game.DificultyManager.GetNumberOfConsoles(), 0, possibleConsolePositions.Count);
+			var consolePositions = possibleConsolePositions.GetRandomValues(numberOfConsoles);
+
+			foreach (var position in consolePositions)
+			{
+				CreateConsole(position);
+			}
+		}
+
+		private void CreateConsole(ConsoleAvailablePosition consolePosition)
+		{
+			var console = Instantiate(Game.PrefabsManager.Console, consolePosition.transform.position, consolePosition.GetRotation(), transform);
 		}
 
 		private void OnTriggerEnter(Collider other)

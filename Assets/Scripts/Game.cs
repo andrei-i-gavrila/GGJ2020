@@ -39,6 +39,8 @@ namespace GGJ
 		private void Initialize()
 		{
 			RoomManager = FindObjectOfType<RoomManager>() ?? new GameObject("RoomManager").AddComponent<RoomManager>();
+			PrefabsManager = FindObjectOfType<PrefabsManager>() ?? gameObject.AddComponent<PrefabsManager>();
+			Character = FindObjectOfType<Character>();
 			Invoke(() =>
 			{
 				Utils.GetComponentInChild<ReactionSpeedPuzzleController>(transform, "ReactionSpeedPuzzle", out var puzzle);
@@ -48,7 +50,10 @@ namespace GGJ
 		}
 
 		public readonly PuzzleManager PuzzleManager = new PuzzleManager();
+		public DificultyManager DificultyManager { get; private set; } = new DificultyManager();
+		public PrefabsManager PrefabsManager { get; private set; }
 		public RoomManager RoomManager;
+		public Character Character { get; private set; }
 		public int CurrentDificulty { get; private set; } = 0;
 	}
 }

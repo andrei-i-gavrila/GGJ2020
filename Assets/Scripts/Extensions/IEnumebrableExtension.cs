@@ -25,5 +25,22 @@ namespace GGJ
 
 			return elements[Random.Range(0, elements.Count)];
 		}
+
+		public static List<T> GetRandomValues<T>(this List<T> elements, int count, bool distincts = true)
+		{
+			var result = new List<T>();
+			int i = 0;
+			while (elements != null && elements.Count > 0 && i < count)
+			{
+				result.Add(GetRandomValue(elements));
+				if (distincts)
+				{
+					elements.Remove(result.Last());
+				}
+				i++;
+			}
+
+			return result;
+		}
 	}
 }

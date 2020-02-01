@@ -1,18 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class ConsoleAvailablePosition : MonoBehaviour
+namespace GGJ.Rooms
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	public class ConsoleAvailablePosition : BaseBehaviour
+	{
+		public Quaternion GetRotation()
+		{
+			return transform.rotation;
+		}
+	}
 }
