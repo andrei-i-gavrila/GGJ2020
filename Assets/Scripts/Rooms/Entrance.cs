@@ -7,7 +7,10 @@ namespace GGJ.Rooms
 	{
 		public Pair<Room, Room> ConnectedRooms = new Pair<Room, Room>();
 		private Dictionary<Room, Direction> entranceDirections = new Dictionary<Room, Direction>();
-		public bool IsLocked { get; private set; } = true;
+		public bool IsLockedByDefault { get; private set; } = true;
+		private List<string> unlockConditions = new List<string>();
+		public bool Locked { get; private set; } = true;
+
 		public void SetDirectionForRoom(Room room, Direction direction)
 		{
 			if (!IsRoomInThisEntrance(room))
@@ -75,10 +78,15 @@ namespace GGJ.Rooms
 
 		private void OnTriggerEnter(Collider other)
 		{
-			if (IsLocked)
+			if (IsLockedByDefault)
 			{
-				IsLocked = false;
-				OnUnlock();                 //WARNING - REMOVE THIS AFTER TESTING
+				return;
+			}
+
+			else if (Locked && Game.ConditionsManager.CheckMany(unlockConditions))
+			{
+				Locked = false;
+				OnUnlock();
 			}
 
 			ConnectedRooms.Item1?.gameObject.SetActive(true);
