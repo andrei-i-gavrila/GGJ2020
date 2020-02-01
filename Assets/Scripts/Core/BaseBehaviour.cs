@@ -7,6 +7,8 @@ namespace GGJ
 {
 	public class BaseBehaviour : MonoBehaviour
 	{
+		public static Game Game => Game.Instance;
+		
 		public Coroutine Invoke(Action action, float time)
 		{
 			return StartCoroutine(DelayedInvoke(action, time));

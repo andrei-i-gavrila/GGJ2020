@@ -33,6 +33,7 @@ namespace GGJ
 			}
 
 			Invoke(() => PuzzleManager.StartPuzzle(PuzzleType.KeySequence, 5), 2);
+			Initialize();
 		}
 
 		private void Initialize()
