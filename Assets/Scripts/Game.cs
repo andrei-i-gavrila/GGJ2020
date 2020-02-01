@@ -1,5 +1,4 @@
 using GGJ.Puzzles;
-using GGJ.Puzzles.KeySequence;
 using GGJ.Puzzles.SimonSays;
 using GGJ.Rooms;
 using UnityEngine;
@@ -34,17 +33,18 @@ namespace GGJ
 				instance = this;
 			}
 
-            Invoke(() =>
-            {
-                Utils.GetComponentInChild<SimonSaysPuzzleController>(transform, "SimonSaysPuzzle", out var puzzle);
-                puzzle.gameObject.SetActive(true);
-                puzzle.Open();
-            }, 1);
+			Initialize();
 		}
 
 		private void Initialize()
 		{
 			RoomManager = FindObjectOfType<RoomManager>() ?? new GameObject("RoomManager").AddComponent<RoomManager>();
+			Invoke(() =>
+			{
+				Utils.GetComponentInChild<SimonSaysPuzzleController>(transform, "SimonSaysPuzzle", out var puzzle);
+				puzzle?.gameObject.SetActive(true);
+				puzzle?.Open();
+			}, 1);
 		}
 
 		public readonly PuzzleManager PuzzleManager = new PuzzleManager();
