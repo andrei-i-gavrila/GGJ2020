@@ -107,7 +107,7 @@ namespace GGJ.Rooms
 			EntrancesParent = new GameObject("Entrances").transform;
 			roomsPrefab = Resources.LoadAll<Room>(Paths.ROOMS_PREFABS).ToList();
 			entrancePrefab = Resources.Load<Entrance>(Paths.PREFABS + "Entrance");
-			roomsParent = GameObject.Find("Rooms").transform ?? new GameObject("Rooms").transform;
+			roomsParent = GameObject.Find("Rooms")?.transform ?? new GameObject("Rooms").transform;
 			roomsPrefab.ForEach(room =>
 			{
 				roomDirections.Add(room, new List<Direction>());

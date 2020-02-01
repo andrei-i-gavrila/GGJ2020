@@ -51,6 +51,7 @@ namespace GGJ
 
 		public readonly PuzzleManager PuzzleManager = new PuzzleManager();
 		public DificultyManager DificultyManager { get; private set; } = new DificultyManager();
+		public ConditionsManager ConditionsManager { get; private set; } = new ConditionsManager();
 		public PrefabsManager PrefabsManager { get; private set; }
 		public RoomManager RoomManager;
 		public Character Character { get; private set; }

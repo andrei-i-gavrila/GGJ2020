@@ -40,6 +40,9 @@ namespace GGJ
 
 			foreach (var interactable in interactables)
 			{
+				if (!interactable.CanBeInteractedWith())
+					continue;
+
 				var sqrDistance = (characterPos - interactable.transform.position).sqrMagnitude;
 				if (sqrDistance <= sqrDistanceTreshold && sqrDistance <= minDistance)
 				{
