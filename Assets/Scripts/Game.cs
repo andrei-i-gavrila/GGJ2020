@@ -1,6 +1,7 @@
 using GGJ.Puzzles;
 using GGJ.Puzzles.Jigsaw;
 using GGJ.Puzzles.KeySequence;
+using GGJ.Puzzles.Memory;
 using GGJ.Puzzles.ReactionSpeed;
 using GGJ.Puzzles.SimonSays;
 using GGJ.Rooms;
@@ -44,7 +45,7 @@ namespace GGJ
 			RoomManager = FindObjectOfType<RoomManager>() ?? new GameObject("RoomManager").AddComponent<RoomManager>();
 			Invoke(() =>
 			{
-                Utils.GetComponentInChild<ReactionSpeedPuzzleController>(transform, "ReactionSpeedPuzzle", out var puzzle);
+                Utils.GetComponentInChild<MemoryPuzzleController>(transform, "MemoryPuzzle", out var puzzle);
                 puzzle?.gameObject.SetActive(true);
                 puzzle?.Open();
 			}, 1);
