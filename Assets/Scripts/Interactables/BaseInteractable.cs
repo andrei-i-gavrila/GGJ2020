@@ -4,8 +4,12 @@ namespace GGJ
 {
 	public class BaseInteractable : BaseBehaviour
 	{
-		private List<string> conditions = new List<string>();
+		public virtual void Start()
+		{
+			Game.InteractablesManager?.Subscribe(this);
+		}
 
+		private List<string> conditions = new List<string>();
 		public void AddCondition(string condition)
 		{
 			conditions.Add(condition);
@@ -19,6 +23,11 @@ namespace GGJ
 		public bool CanBeInteractedWith()
 		{
 			return conditions.Count == 0 || Game.ConditionsManager.CheckMany(conditions);
+		}
+
+		public virtual void OnInteract()
+		{
+
 		}
 	}
 }

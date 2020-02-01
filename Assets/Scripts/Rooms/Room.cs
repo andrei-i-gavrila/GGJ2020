@@ -11,6 +11,7 @@ namespace GGJ.Rooms
 		public HashSet<Direction> CompatibleDirections { get; set; } = new HashSet<Direction>();
 		private List<EntranceSpawnPoint> entrancePositions = new List<EntranceSpawnPoint>();
 		private List<ConsoleAvailablePosition> possibleConsolePositions = new List<ConsoleAvailablePosition>();
+		private List<string> puzzleIds = new List<string>();
 
 		public Transform GetEntranceForDirection(Direction direction)
 		{
@@ -43,8 +44,14 @@ namespace GGJ.Rooms
 
 		private void Initialize()
 		{
+			SetPuzzlesIds();
 			ManageEntrances();
 			CreateConsoles();
+		}
+
+		private void SetPuzzlesIds()
+		{
+			puzzleIds.Add(Constants.JIGSAW_ID);
 		}
 
 		private void ManageEntrances()
@@ -91,6 +98,7 @@ namespace GGJ.Rooms
 		private void CreateConsole(ConsoleAvailablePosition consolePosition)
 		{
 			var console = Instantiate(Game.PrefabsManager.Console, consolePosition.transform.position, consolePosition.GetRotation(), transform);
+			console.SetPuzzleId(puzzleIds.GetRandomValue());
 		}
 
 		private void OnTriggerEnter(Collider other)

@@ -40,6 +40,8 @@ namespace GGJ
 		{
 			RoomManager = FindObjectOfType<RoomManager>() ?? new GameObject("RoomManager").AddComponent<RoomManager>();
 			PrefabsManager = FindObjectOfType<PrefabsManager>() ?? gameObject.AddComponent<PrefabsManager>();
+			PuzzleManager = FindObjectOfType<PuzzleManager>() ?? gameObject.AddComponent<PuzzleManager>();
+			InteractablesManager = FindObjectOfType<InteractablesManager>() ?? gameObject.AddComponent<InteractablesManager>();
 			Character = FindObjectOfType<Character>();
 			Invoke(() =>
 			{
@@ -49,11 +51,12 @@ namespace GGJ
 			}, 1);
 		}
 
-		public readonly PuzzleManager PuzzleManager = new PuzzleManager();
 		public DificultyManager DificultyManager { get; private set; } = new DificultyManager();
 		public ConditionsManager ConditionsManager { get; private set; } = new ConditionsManager();
+		public InteractablesManager InteractablesManager { get; private set; }
 		public PrefabsManager PrefabsManager { get; private set; }
 		public RoomManager RoomManager;
+		public PuzzleManager PuzzleManager { get; set; }
 		public Character Character { get; private set; }
 		public int CurrentDificulty { get; private set; } = 0;
 	}

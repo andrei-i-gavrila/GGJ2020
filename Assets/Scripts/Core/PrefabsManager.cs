@@ -4,11 +4,11 @@ namespace GGJ
 {
 	public class PrefabsManager : BaseBehaviour
 	{
-		public Transform Console { get; private set; }
+		public Console Console { get; private set; }
 
 		private void Awake()
 		{
-			Console = Resources.Load<Transform>(Paths.PREFABS + "Console");
+			Console = Resources.Load<Console>(Paths.PREFABS + "Console");
 		}
 	}
 }
