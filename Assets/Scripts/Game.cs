@@ -35,17 +35,18 @@ namespace GGJ
 				instance = this;
 			}
 
-            Invoke(() =>
-            {
-                Utils.GetComponentInChild<JigsawPuzzleController>(transform, "JigsawPuzzle", out var puzzle);
-                puzzle.gameObject.SetActive(true);
-                puzzle.Open();
-            }, 1);
+			Initialize();
 		}
 
 		private void Initialize()
 		{
 			RoomManager = FindObjectOfType<RoomManager>() ?? new GameObject("RoomManager").AddComponent<RoomManager>();
+			Invoke(() =>
+			{
+                Utils.GetComponentInChild<JigsawPuzzleController>(transform, "JigsawPuzzle", out var puzzle);
+                puzzle?.gameObject.SetActive(true);
+                puzzle?.Open();
+			}, 1);
 		}
 
 		public readonly PuzzleManager PuzzleManager = new PuzzleManager();
