@@ -1,4 +1,5 @@
 using GGJ.Puzzles;
+using GGJ.Puzzles.Jigsaw;
 using GGJ.Puzzles.KeySequence;
 using GGJ.Puzzles.SimonSays;
 using GGJ.Rooms;
@@ -36,7 +37,7 @@ namespace GGJ
 
             Invoke(() =>
             {
-                Utils.GetComponentInChild<SimonSaysPuzzleController>(transform, "SimonSaysPuzzle", out var puzzle);
+                Utils.GetComponentInChild<JigsawPuzzleController>(transform, "JigsawPuzzle", out var puzzle);
                 puzzle.gameObject.SetActive(true);
                 puzzle.Open();
             }, 1);
