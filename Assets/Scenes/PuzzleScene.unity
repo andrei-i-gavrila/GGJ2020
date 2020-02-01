@@ -412,6 +412,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 18645937}
     m_Modifications:
+    - target: {fileID: 8383384972213410954, guid: 1584231e7ad902c42aa3ef260f8857ed,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8383384972870708999, guid: 1584231e7ad902c42aa3ef260f8857ed,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -471,6 +476,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ReactionSpeedPuzzle
+      objectReference: {fileID: 0}
+    - target: {fileID: 8383384972870709006, guid: 1584231e7ad902c42aa3ef260f8857ed,
+        type: 3}
+      propertyPath: difficulty
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1584231e7ad902c42aa3ef260f8857ed, type: 3}
