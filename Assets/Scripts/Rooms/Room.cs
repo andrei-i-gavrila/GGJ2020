@@ -1,18 +1,43 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace GGJ.Rooms
 {
 	public class Room : BaseBehaviour
 	{
-		[SerializeField] private List<EntranceSpawnPoint> entrancePositions = new List<EntranceSpawnPoint>();
-		[SerializeField] private Entrance spawningPrefab;
+		public string RoomId { get; set; }
+		public HashSet<Direction> Directions { get; set; } = new HashSet<Direction>();
+		public HashSet<Direction> CompatibleDirections { get; set; } = new HashSet<Direction>();
 
-		public List<Entrance> Entrances { get; private set; } = new List<Entrance>();
+		private List<EntranceSpawnPoint> entrancePositions = new List<EntranceSpawnPoint>();
+
+		public void SetupRoom()
+		{
+			var dificulty = Game.CurrentDificulty;
+		}
+
+		public Transform GetEntranceForDirection(Direction direction)
+		{
+			if (!Directions.Contains(direction))
+				return null;
+
+			return entrancePositions.FirstOrDefault(entrance => entrance.Direction == direction)?.transform ?? null;
+		}
+
+		private void InitializeEntrances()
+		{
+			entrancePositions = gameObject.GetComponentsInChildren<EntranceSpawnPoint>().ToList();
+			entrancePositions.ForEach(entrance =>
+			{
+				Directions.Add(entrance.Direction);
+				CompatibleDirections.Add(Utils.GetOppositeDirection(entrance.Direction));
+			});
+		}
 
 		private void Awake()
 		{
-
+			InitializeEntrances();
 		}
 
 		private void Start()
