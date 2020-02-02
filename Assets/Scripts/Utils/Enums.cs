@@ -14,4 +14,11 @@
 		Interactable,
 		Resolved
 	}
+
+	public enum DoorState
+	{
+		Open,
+		Closed,
+		InTransition
+	}
 }
