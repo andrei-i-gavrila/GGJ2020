@@ -1,11 +1,8 @@
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using Image = UnityEngine.UI.Image;
-using Random = UnityEngine.Random;
+using UnityEngine.UI;
 
 namespace GGJ.Puzzles.Jigsaw
 {
@@ -17,7 +14,7 @@ namespace GGJ.Puzzles.Jigsaw
         private const int puzzleWidth = 800;
         private const int puzzleHeight = 400;
 
-        private readonly List<JigsawPiece> pieces = new List<JigsawPiece>();
+        private List<JigsawPiece> pieces;
         private RectTransform jigsawRoot;
 
         
@@ -57,7 +54,9 @@ namespace GGJ.Puzzles.Jigsaw
 
         protected override void generatePuzzleData()
         {
-            var pieceCount = (int) Mathf.Lerp(5, 15, difficulty / 10f);
+            pieces?.ForEach(o => Destroy(o.gameObject));
+            pieces = new List<JigsawPiece>();
+            var pieceCount = (int) Mathf.Lerp(2, 15, difficulty / 10f);
             var thresholdDistance = puzzleHeight * puzzleWidth / (pieceCount * Mathf.PI);
 
             var centers = new List<Vector2Int>();
@@ -124,6 +123,7 @@ namespace GGJ.Puzzles.Jigsaw
         private RectTransform _rectTransform;
         public bool correct;
         private Texture2D _texture;
+        private float allowedError = 40;
 
         public void Init(Vector2Int correctCenter, Vector2Int center, List<Vector2Int> pixelsOffsets)
         {
@@ -137,6 +137,7 @@ namespace GGJ.Puzzles.Jigsaw
         {
             _rectTransform.sizeDelta = new Vector2(_rectTransform.sizeDelta.x * xScale, _rectTransform.sizeDelta.y * yScale);
             CorrectCenter = new Vector2(CorrectCenter.x * xScale, CorrectCenter.y * yScale);
+            allowedError *= (xScale + yScale) / 2;
         }
 
         private void createSprite(List<Vector2Int> pixelOffsets)
@@ -179,7 +180,7 @@ namespace GGJ.Puzzles.Jigsaw
 
         public void OnEndDrag(PointerEventData eventData)
         {
-            if (!((CorrectCenter - _rectTransform.anchoredPosition).sqrMagnitude <= 160)) return;
+            if (!((CorrectCenter - _rectTransform.anchoredPosition).sqrMagnitude <= allowedError*allowedError)) return;
             correct = true;
             _rectTransform.SetAsFirstSibling();
             _rectTransform.anchoredPosition = CorrectCenter;
