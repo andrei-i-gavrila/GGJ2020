@@ -10,6 +10,11 @@ namespace GGJ
 
 		private string puzzleId = "";
 
+		public void SetConsoleId(string id)
+		{
+			Id = id;
+		}
+
 		public void SetRoom(Room room)
 		{
 			Room = room;

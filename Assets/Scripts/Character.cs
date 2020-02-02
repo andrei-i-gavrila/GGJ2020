@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using JetBrains.Annotations;
+using UnityEngine;
 
 namespace GGJ
 {
@@ -36,6 +37,8 @@ namespace GGJ
 		{
 			CanMove = true;
 			CanInteract = true;
+			Cursor.lockState = CursorLockMode.Locked;
+			Cursor.visible = false;
 		}
 	}
 }

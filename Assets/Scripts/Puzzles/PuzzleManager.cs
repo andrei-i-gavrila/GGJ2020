@@ -47,6 +47,7 @@ namespace GGJ.Puzzles
 		{
 			basePuzzleController.gameObject.SetActive(true);
 			basePuzzleController.Open();
+			
 			basePuzzleController.OnPuzzleCompleted += OnPuzzleCompletedHandler;
 			basePuzzleController.OnPuzzleCompleted += OnPuzzleCompleted;
 			OnPuzzleStarted?.Invoke(basePuzzleController);

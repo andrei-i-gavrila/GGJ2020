@@ -11,6 +11,7 @@ namespace GGJ.Puzzles.Jigsaw
 {
     public class JigsawPuzzleController : BasePuzzleController
     {
+        protected override Component puzzleContainer => jigsawRoot;
         public override string PuzzleId => Constants.JIGSAW_ID;
 
         private const int puzzleWidth = 800;
@@ -19,6 +20,8 @@ namespace GGJ.Puzzles.Jigsaw
         private readonly List<JigsawPiece> pieces = new List<JigsawPiece>();
         private RectTransform jigsawRoot;
 
+        
+        
         protected void Awake()
         {
             Utils.GetComponentInChild(transform, "StartText", out startText);
