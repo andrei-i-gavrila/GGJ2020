@@ -32,7 +32,9 @@ namespace GGJ.Puzzles.ReactionSpeed
         private RectTransform targetRect;
         private Image targetRectImage;
 
+        protected override Component puzzleContainer => containerBar;
 
+        
         protected void Awake()
         {
             Utils.GetComponentInChild(transform, "StartText", out startText);

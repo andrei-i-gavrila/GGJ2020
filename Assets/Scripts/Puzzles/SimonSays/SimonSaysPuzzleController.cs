@@ -8,6 +8,7 @@ namespace GGJ.Puzzles.SimonSays
 {
     public class SimonSaysPuzzleController : BasePuzzleController
     {
+        protected override Component puzzleContainer => container;
         public override string PuzzleId => Constants.SIMON_ID;
 
 
@@ -25,6 +26,8 @@ namespace GGJ.Puzzles.SimonSays
         private SimonSaysKeyDisplay left;
         private SimonSaysKeyDisplay right;
 
+        private RectTransform container;
+
         private bool waitingInput;
 
         protected void Awake()
@@ -35,6 +38,7 @@ namespace GGJ.Puzzles.SimonSays
             Utils.GetComponentInChild(transform, "Left", out left);
             Utils.GetComponentInChild(transform, "ProgressBar", out progressBar);
             Utils.GetComponentInChild(transform, "StartText", out startText);
+            Utils.GetComponentInChild(transform, "Image", out container);
         }
 
         private void Update()
@@ -90,6 +94,8 @@ namespace GGJ.Puzzles.SimonSays
         protected override void StartPuzzle()
         {
             base.StartPuzzle();
+            
+            container.gameObject.SetActive(true);
             StartCoroutine(showHints());
         }
 
@@ -146,6 +152,7 @@ namespace GGJ.Puzzles.SimonSays
             TimePassed = 0;
             CorrectKeyCount = 0;
             stage = 1;
+            container.gameObject.SetActive(false);
         }
     }
 }

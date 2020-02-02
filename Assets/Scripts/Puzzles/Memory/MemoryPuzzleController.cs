@@ -14,6 +14,7 @@ namespace GGJ.Puzzles.Memory
 {
     public class MemoryPuzzleController : BasePuzzleController
     {
+        protected override Component puzzleContainer => tilesContainer;
         public override string PuzzleId => Constants.MEMORY_ID;
         
         private int pairCount;

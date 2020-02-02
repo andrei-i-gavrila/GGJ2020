@@ -10,9 +10,8 @@ namespace GGJ
         public float difficulty = 1f;
         protected bool opened;
         protected bool started;
-
         protected TextMeshProUGUI startText;
-
+        protected abstract Component puzzleContainer { get; }
 
         public Action OnOpen { get; set; }
 
@@ -20,19 +19,29 @@ namespace GGJ
 
         public abstract string PuzzleId { get; }
 
-
-        protected virtual void fail()
+        protected void fail()
         {
-            resetPuzzle();
-            // opened = false;
-            OnPuzzleCompleted?.Invoke(false);
+            puzzleContainer.gameObject.SetActive(false);
+            startText.gameObject.SetActive(true);
+            startText.text = "Failed...";
+            Invoke(() => completeWithState(false), 1);
         }
 
         protected void completed()
         {
+            puzzleContainer.gameObject.SetActive(false);
+            startText.gameObject.SetActive(true);
+            startText.text = "Success!";
+            Invoke(() => completeWithState(true), 1);
+        }
+
+        private void completeWithState(bool state)
+        {
             resetPuzzle();
-            // opened = false;
-            OnPuzzleCompleted?.Invoke(true);
+            opened = false;
+            OnPuzzleCompleted?.Invoke(state);
+            OnPuzzleCompleted = null;
+            gameObject.SetActive(false);
         }
 
         public virtual void Open()
@@ -40,6 +49,10 @@ namespace GGJ
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
             opened = true;
+            startText.gameObject.SetActive(true);
+            startText.text = "Press space to start";
+
+
             resetPuzzle();
         }
 

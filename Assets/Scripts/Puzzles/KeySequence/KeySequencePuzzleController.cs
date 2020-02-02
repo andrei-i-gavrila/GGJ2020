@@ -7,6 +7,7 @@ namespace GGJ.Puzzles.KeySequence
 {
     public class KeySequencePuzzleController : BasePuzzleController
     {
+        protected override Component puzzleContainer => keyLayout;
         public override string PuzzleId => Constants.KEYSEQUENCE_ID;
         public List<KeyCode> KeySequence;
         public float CompletionTime;

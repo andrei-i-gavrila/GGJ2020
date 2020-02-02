@@ -144,7 +144,7 @@ namespace GGJ.Rooms
 			}
 
 			var result = new List<int>();
-			for (int i = from; i <= to; i++)
+			for (var i = from; i <= to; i++)
 			{
 				result.Add(i);
 			}
