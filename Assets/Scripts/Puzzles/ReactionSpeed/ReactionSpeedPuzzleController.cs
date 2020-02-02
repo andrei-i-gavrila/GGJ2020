@@ -19,7 +19,6 @@ namespace GGJ.Puzzles.ReactionSpeed
         private List<Pair<int, float>> challenges;
         private float maxError;
         private float speed;
-        private float errorDecrease;
         private float currentError;
 
         private int stage;
@@ -34,7 +33,7 @@ namespace GGJ.Puzzles.ReactionSpeed
 
         protected override Component puzzleContainer => containerBar;
 
-        
+
         protected void Awake()
         {
             Utils.GetComponentInChild(transform, "StartText", out startText);
@@ -76,7 +75,6 @@ namespace GGJ.Puzzles.ReactionSpeed
                             return;
                         }
 
-                        currentError *= errorDecrease;
                         moveProgress = challenges[stage].Item1 < 0 ? 1f : 0f;
                         moving = false;
                         Invoke(startBarMovement, 1);
@@ -90,10 +88,10 @@ namespace GGJ.Puzzles.ReactionSpeed
                 }
             }
 
-            targetRect.anchoredPosition = new Vector2(Mathf.Lerp(sliderRect.sizeDelta.x / 2 - containerBar.sizeDelta.x / 2, containerBar.sizeDelta.x / 2 - sliderRect.sizeDelta.x / 2f, challenges[stage].Item2), 0);
-            targetRect.sizeDelta = new Vector2(Mathf.Lerp(0, containerBar.sizeDelta.x, currentError), containerBar.sizeDelta.y);
+            targetRect.anchoredPosition = new Vector2(Mathf.Lerp(sliderRect.sizeDelta.x / 2 - containerBar.rect.width / 2, containerBar.rect.width / 2 - sliderRect.sizeDelta.x / 2f, challenges[stage].Item2), 0);
+            targetRect.sizeDelta = new Vector2(Mathf.Lerp(0, containerBar.rect.width, currentError), containerBar.rect.height);
 
-            sliderRect.anchoredPosition = new Vector2(Mathf.Lerp(sliderRect.sizeDelta.x / 2 - containerBar.sizeDelta.x / 2, containerBar.sizeDelta.x / 2 - sliderRect.sizeDelta.x / 2f, moveProgress), 0);
+            sliderRect.anchoredPosition = new Vector2(Mathf.Lerp(sliderRect.sizeDelta.x / 2 - containerBar.rect.width / 2, containerBar.rect.width / 2 - sliderRect.sizeDelta.x / 2f, moveProgress), 0);
         }
 
         private void setStatus(Color color)
@@ -119,19 +117,18 @@ namespace GGJ.Puzzles.ReactionSpeed
 
         protected override void generatePuzzleData()
         {
-            var challengeCount = (int) Mathf.Lerp(2, 5, difficulty / 10f);
+            var challengeCount = Game.Instance.DificultyManager.GetNumberOfReactionTimeChallenges();
             challenges = new List<Pair<int, float>>(challengeCount);
-            speed = Random.Range(-1f, 1f) * difficulty / 2f;
+            speed = Game.Instance.DificultyManager.GetReactTimeSpeed();
             for (var i = 0; i < challengeCount; i++)
             {
-                var dir = Random.Range(0f, 1f) < 0.5f ? -1 : 1;
-                var target = speed < 0 ? Random.Range(0f, 1f - speed / 2f) : Random.Range(speed / 2f, 1f);
+                var dir = Random.value < 0.5 ? -1 : 1;
+                var target = Random.Range(speed / 3f, 1 - speed / 3f);
 
                 challenges.Add(new Pair<int, float>(dir, target));
             }
 
-            maxError = Mathf.Lerp(0.05f, 0.01f, difficulty / 10f);
-            errorDecrease = 1 - difficulty / 100f;
+            maxError = Game.Instance.DificultyManager.GetMaxReactionSpeedTimeError();
         }
 
 

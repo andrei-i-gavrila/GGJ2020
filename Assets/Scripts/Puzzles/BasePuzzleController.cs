@@ -32,7 +32,7 @@ namespace GGJ
             puzzleContainer.gameObject.SetActive(false);
             startText.gameObject.SetActive(true);
             startText.text = "Failed...";
-            Invoke(() => completeWithState(false), 1);
+            Invoke(() => completeWithState(false), 0.66f);
         }
 
         protected void completed()
@@ -40,7 +40,7 @@ namespace GGJ
             puzzleContainer.gameObject.SetActive(false);
             startText.gameObject.SetActive(true);
             startText.text = "Success!";
-            Invoke(() => completeWithState(true), 1);
+            Invoke(() => completeWithState(true), 0.33f);
         }
 
         private void completeWithState(bool state)

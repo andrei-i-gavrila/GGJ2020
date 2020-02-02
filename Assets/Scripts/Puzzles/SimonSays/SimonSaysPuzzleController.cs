@@ -50,6 +50,8 @@ namespace GGJ.Puzzles.SimonSays
 
             if (!started) return;
 
+            
+            
             if (!waitingInput) return;
 
             TimePassed += Time.deltaTime;
@@ -62,12 +64,22 @@ namespace GGJ.Puzzles.SimonSays
 
             if (arrowKeys.Any(Input.GetKeyDown))
             {
+                foreach (var key in arrowKeys)
+                {
+                    if (Input.GetKeyDown(key))
+                    {
+                        getKeyDisplay(key).SetPressed();
+                    }
+                    if (Input.GetKeyUp(key))
+                    {
+                        getKeyDisplay(key).SetNormal();
+                    }
+                }
+                
+                
+                
                 if (Input.GetKeyDown(KeySequence[CorrectKeyCount]))
                 {
-                    var keyDisplay = getKeyDisplay(KeySequence[CorrectKeyCount]);
-                    keyDisplay.SetPressed();
-                    Invoke(keyDisplay.SetNormal, .5f);
-
                     CorrectKeyCount++;
                     if (CorrectKeyCount == stage)
                     {
@@ -90,7 +102,6 @@ namespace GGJ.Puzzles.SimonSays
             }
         }
 
-
         protected override void StartPuzzle()
         {
             base.StartPuzzle();
@@ -102,17 +113,23 @@ namespace GGJ.Puzzles.SimonSays
 
         private IEnumerator showHints()
         {
+            
             waitingInput = false;
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(.33f);
+            foreach (var arrowKey in arrowKeys)
+            {
+                getKeyDisplay(arrowKey).SetNormal();
+            }
+            yield return new WaitForSeconds(.33f);
 
             for (var i = 0; i < stage; i++)
             {
                 var keyDisplay = getKeyDisplay(KeySequence[i]);
 
                 keyDisplay.SetHint();
-                yield return new WaitForSeconds(.5f);
+                yield return new WaitForSeconds(.3f);
                 keyDisplay.SetNormal();
-                yield return new WaitForSeconds(.5f);
+                yield return new WaitForSeconds(.3f);
             }
 
             waitingInput = true;
@@ -125,9 +142,9 @@ namespace GGJ.Puzzles.SimonSays
             var keyPossibilities = new[] {KeyCode.UpArrow, KeyCode.RightArrow, KeyCode.DownArrow, KeyCode.LeftArrow};
             KeySequence = new List<KeyCode>();
 
-            var keyAmount = (int) Mathf.Lerp(5f, 8f, difficulty / 10f);
+            var keyAmount = Game.Instance.DificultyManager.GetNumberOfSimonCommands();
 
-            MaxTime = Mathf.Lerp(10f, 5f, difficulty / 10f);
+            MaxTime = Game.Instance.DificultyManager.GetSimonMaxTime();
 
             for (var i = 0; i < keyAmount; i++)
             {
