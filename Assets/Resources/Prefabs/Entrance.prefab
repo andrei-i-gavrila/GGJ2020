@@ -109,6 +109,9 @@ MonoBehaviour:
   Lights:
   - {fileID: 2983155623894190118}
   - {fileID: 2442260075888778281}
+  LightsPoints:
+  - {fileID: 6941848153850213342}
+  - {fileID: 1065756567455794517}
 --- !u!65 &4190270114993365329
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -209,9 +212,21 @@ MeshRenderer:
     type: 3}
   m_PrefabInstance: {fileID: 6381511635406351243}
   m_PrefabAsset: {fileID: 0}
+--- !u!108 &6941848153850213342 stripped
+Light:
+  m_CorrespondingSourceObject: {fileID: 4096526442070513749, guid: b70e9bc4753c53a40bd9c0096d4103c1,
+    type: 3}
+  m_PrefabInstance: {fileID: 6381511635406351243}
+  m_PrefabAsset: {fileID: 0}
 --- !u!23 &2442260075888778281 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 8749097270979524514, guid: b70e9bc4753c53a40bd9c0096d4103c1,
+    type: 3}
+  m_PrefabInstance: {fileID: 6381511635406351243}
+  m_PrefabAsset: {fileID: 0}
+--- !u!108 &1065756567455794517 stripped
+Light:
+  m_CorrespondingSourceObject: {fileID: 6216652994588765918, guid: b70e9bc4753c53a40bd9c0096d4103c1,
     type: 3}
   m_PrefabInstance: {fileID: 6381511635406351243}
   m_PrefabAsset: {fileID: 0}

@@ -60,6 +60,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FaceImage: {fileID: 0}
+  faceImageRectTransform: {fileID: 0}
 --- !u!114 &4224213823520498564
 MonoBehaviour:
   m_ObjectHideFlags: 0
