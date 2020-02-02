@@ -67,7 +67,7 @@ namespace GGJ
 
 		public float GetTimePerKeyInKeySequence()
 		{
-			return Math.Max(0.1f, 0.3f - Dificulty * 0.01f);
+			return Math.Max(0.3f, 0.5f - Dificulty * 0.01f);
 		}
 
 		public int GetNumberOfMemoryPairs()
