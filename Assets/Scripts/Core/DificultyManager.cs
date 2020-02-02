@@ -2,13 +2,9 @@
 
 namespace GGJ
 {
-	public class DificultyManager
+	public class DificultyManager : BaseBehaviour
 	{
 		public int Dificulty { get; private set; }
-		public DificultyManager()
-		{
-
-		}
 
 		public void OnLevelCompleted()
 		{
