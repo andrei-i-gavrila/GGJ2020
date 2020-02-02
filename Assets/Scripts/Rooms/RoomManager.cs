@@ -57,7 +57,7 @@ namespace GGJ.Rooms
 
 		public Entrance GenerateEntrance(Vector3 position, Room room, Direction direction)
 		{
-			var quaternion = (direction == Direction.Nord || direction == Direction.South) ? Quaternion.identity : Quaternion.Euler(0f, 90f, 0f);
+			var quaternion = (direction == Direction.North || direction == Direction.South) ? Quaternion.identity : Quaternion.Euler(0f, 90f, 0f);
 			var entrance = Instantiate(entrancePrefab, position, quaternion, Game.Instance.RoomManager.EntrancesParent);
 			entrance.ConnectedRooms.Item1 = room;
 			entrance.SetDirectionForRoom(room, direction);
@@ -99,7 +99,9 @@ namespace GGJ.Rooms
 		private string GenerateRoomId()
 		{
 			var key = availableIds.Keys.GetRandomValue();
-			return key + availableIds[key].GetRandomValue();
+			var value = availableIds[key].GetRandomValue();
+			availableIds[key].Remove(value);
+			return key + value;
 		}
 
 		private void Awake()

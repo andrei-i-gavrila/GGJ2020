@@ -29,19 +29,19 @@ namespace GGJ
 			{
 				return Direction.East;
 			}
-			else if (direction == Direction.Nord)
+			else if (direction == Direction.North)
 			{
 				return Direction.South;
 			}
 			else
 			{
-				return Direction.Nord;
+				return Direction.North;
 			}
 		}
 
 		public static Vector3 GetVectorDirection(Direction direction)
 		{
-			if (direction == Direction.Nord)
+			if (direction == Direction.North)
 			{
 				return Vector3.forward;
 			}
