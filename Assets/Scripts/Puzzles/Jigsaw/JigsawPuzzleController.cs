@@ -46,6 +46,12 @@ namespace GGJ.Puzzles.Jigsaw
         {
             base.StartPuzzle();
             jigsawRoot.gameObject.SetActive(true);
+            var xScale = jigsawRoot.rect.width / puzzleWidth;
+            var yScale = jigsawRoot.rect.height / puzzleHeight;
+            foreach (var jigsawPiece in pieces)
+            {
+                jigsawPiece.scaleBy(xScale, yScale);
+            }
         }
 
 
@@ -114,7 +120,7 @@ namespace GGJ.Puzzles.Jigsaw
 
     internal class JigsawPiece : BaseBehaviour, IEndDragHandler, IDragHandler
     {
-        public Vector2Int CorrectCenter;
+        public Vector2 CorrectCenter;
         private RectTransform _rectTransform;
         public bool correct;
         private Texture2D _texture;
@@ -125,6 +131,12 @@ namespace GGJ.Puzzles.Jigsaw
 
             createSprite(pixelsOffsets);
             _rectTransform.anchoredPosition = center;
+        }
+
+        public void scaleBy(float xScale, float yScale)
+        {
+            _rectTransform.sizeDelta = new Vector2(_rectTransform.sizeDelta.x * xScale, _rectTransform.sizeDelta.y * yScale);
+            CorrectCenter = new Vector2(CorrectCenter.x * xScale, CorrectCenter.y * yScale);
         }
 
         private void createSprite(List<Vector2Int> pixelOffsets)
@@ -167,7 +179,7 @@ namespace GGJ.Puzzles.Jigsaw
 
         public void OnEndDrag(PointerEventData eventData)
         {
-            if (!((CorrectCenter - _rectTransform.anchoredPosition).sqrMagnitude <= 100)) return;
+            if (!((CorrectCenter - _rectTransform.anchoredPosition).sqrMagnitude <= 160)) return;
             correct = true;
             _rectTransform.SetAsFirstSibling();
             _rectTransform.anchoredPosition = CorrectCenter;

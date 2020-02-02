@@ -38,7 +38,7 @@ namespace GGJ.Rooms
 
 		public Room GenerateRoom(Vector3 entrancePosition, Entrance entrance, Direction direction)
 		{
-			var newRoom = Instantiate(GetCompatableRoomPrefabs(direction).GetRandomValue(), roomsParent);
+			var newRoom = Instantiate(GetCompatibleRoomPrefabs(direction).GetRandomValue(), roomsParent);
 			var entryTransform = newRoom.GetComponentsInChildren<EntranceSpawnPoint>().FirstOrDefault(comp => comp.Direction == (Utils.GetOppositeDirection(direction)))?.transform;
 			if (entryTransform == null)
 			{
@@ -78,7 +78,7 @@ namespace GGJ.Rooms
 			OnRoomEntered?.Invoke(CurrentRoom, PreviouseRoom);
 		}
 
-		private List<Room> GetCompatableRoomPrefabs(Direction direction)
+		private List<Room> GetCompatibleRoomPrefabs(Direction direction)
 		{
 			var result = new List<Room>();
 			return roomsPrefab.Where(roomPrefab => roomCompatibleDirections[roomPrefab].Contains(direction)).ToList();
