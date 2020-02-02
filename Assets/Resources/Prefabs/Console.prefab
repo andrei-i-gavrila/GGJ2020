@@ -47,6 +47,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Room: {fileID: 0}
+  Light: {fileID: 4906031928188999306}
+  Monitor: {fileID: 8003374761289320333}
 --- !u!1 &5430566500967054136
 GameObject:
   m_ObjectHideFlags: 0
@@ -215,6 +217,12 @@ PrefabInstance:
 --- !u!4 &4717024890064912706 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7447552983224593781, guid: f3ab9a07a0100e7489afea5e79496981,
+    type: 3}
+  m_PrefabInstance: {fileID: 2750917481915640887}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &8003374761289320333 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 5277244797319670714, guid: f3ab9a07a0100e7489afea5e79496981,
     type: 3}
   m_PrefabInstance: {fileID: 2750917481915640887}
   m_PrefabAsset: {fileID: 0}
