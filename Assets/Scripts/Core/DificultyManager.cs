@@ -6,9 +6,17 @@ namespace GGJ
 	{
 		public int Dificulty { get; private set; }
 
-		public void OnLevelCompleted()
+		private void Start()
 		{
+			Game.PuzzleManager.OnPuzzleCompleted += OnLevelCompleted;
+		}
 
+		public void OnLevelCompleted(bool state)
+		{
+			if (!state)
+				return;
+
+			Dificulty++;
 		}
 
 		public int GetNumberOfConsoles()
