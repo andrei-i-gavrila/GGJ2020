@@ -7,16 +7,24 @@ namespace GGJ.Rooms
 	public class Entrance : BaseBehaviour
 	{
 		[SerializeField] private Transform slidingDoor;
-		private const float OPEN_DURATION = 0.5f;
+		private const float OPEN_DURATION = 0.3f;
 		private const float OPEN_DISTANCE = 3f;
+		private DoorCloser DoorCloser;
 
 		public Pair<Room, Room> ConnectedRooms = new Pair<Room, Room>();
 		public Dictionary<Room, Direction> EntranceDirections = new Dictionary<Room, Direction>();
 		private List<string> unlockConditions = new List<string>();
 		private Tween doorTween;
-
+		private DoorState doorState = DoorState.Closed;
 		public bool Locked { get; set; } = true;
 		private bool runned = false;
+
+		private void Awake()
+		{
+			DoorCloser = GetComponentInChildren<DoorCloser>();
+			DoorCloser.OnExit += CloseDoor;
+		}
+
 		public void SetDirectionForRoom(Room room, Direction direction)
 		{
 			if (!IsRoomInThisEntrance(room))
@@ -95,14 +103,6 @@ namespace GGJ.Rooms
 			ConnectedRooms.Item2?.gameObject.SetActive(true);
 		}
 
-		private void OnTriggerExit(Collider other)
-		{
-			if (Locked)
-				return;
-
-			CloseDoor();
-		}
-
 		private void OnUnlock()
 		{
 			if (runned)
@@ -126,28 +126,47 @@ namespace GGJ.Rooms
 
 		private void OpenDoor()
 		{
-			if (doorTween != null && doorTween.active)
+			if (doorState == DoorState.Open)
 			{
+				return;
+			}
+
+			if (doorState == DoorState.InTransition && doorTween != null && doorTween.active)
+			{
+				doorTween.onComplete = null;
 				doorTween.Kill();
 				doorTween = null;
 			}
 
 			var remainingDistance = OPEN_DISTANCE - transform.position.y;
 			var remainingTime = OPEN_DURATION * (remainingDistance / OPEN_DISTANCE);
-			slidingDoor.DOMoveY(OPEN_DISTANCE, remainingTime);
+			slidingDoor.DOMoveY(OPEN_DISTANCE, remainingTime).OnComplete(() => SetDoorState(DoorState.Open));
+			doorState = DoorState.InTransition;
 		}
 
 		private void CloseDoor()
 		{
-			if (doorTween != null && doorTween.active)
+			if (doorState == DoorState.Closed)
 			{
+				return;
+			}
+
+			if (doorState == DoorState.InTransition && doorTween != null && doorTween.active)
+			{
+				doorTween.onComplete = null;
 				doorTween.Kill();
 				doorTween = null;
 			}
 
-			var remainingDistance = transform.position.y;
+			var remainingDistance = slidingDoor.position.y;
 			var remainingTime = OPEN_DURATION * (remainingDistance / OPEN_DISTANCE);
-			slidingDoor.DOMoveY(0, remainingTime);
+			slidingDoor.DOMoveY(0, remainingTime).OnComplete(() => SetDoorState(DoorState.Closed));
+			doorState = DoorState.InTransition;
+		}
+
+		private void SetDoorState(DoorState doorState)
+		{
+			this.doorState = doorState;
 		}
 	}
 }
