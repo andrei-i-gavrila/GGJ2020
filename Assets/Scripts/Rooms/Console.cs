@@ -1,4 +1,5 @@
 ﻿using GGJ.Rooms;
+using UnityEngine;
 
 namespace GGJ
 {
@@ -9,6 +10,15 @@ namespace GGJ
 		public Room Room;
 
 		private string puzzleId = "";
+
+		public Light Light;
+		public Renderer Monitor;
+
+		public override void Start()
+		{
+			base.Start();
+			SetConsoleState(ConsoleState);
+		}
 
 		public void SetConsoleId(string id)
 		{
@@ -38,6 +48,30 @@ namespace GGJ
 		public void SetConsoleState(ConsoleState newState)
 		{
 			ConsoleState = newState;
+			var mats = Monitor.materials;
+			switch (newState)
+			{
+				case ConsoleState.Locked:
+					mats[1] = Resources.Load<Material>(Constants.StationMaterialPath);
+					Light.intensity = 0;
+					break;
+
+				case ConsoleState.Interactable:
+					mats[1] = Resources.Load<Material>(Constants.BlueEmissionMaterialPath);
+					Light.color = new Color(Constants.BlueLightColorColor.X, Constants.BlueLightColorColor.Y, Constants.BlueLightColorColor.Z);
+					Light.intensity = 1;
+					break;
+
+				case ConsoleState.Resolved:
+					mats[1] = Resources.Load<Material>(Constants.GreenEmissionMaterialPath);
+					Light.color = new Color(Constants.GreenLightColor.X, Constants.GreenLightColor.Y, Constants.GreenLightColor.Z);
+					Light.intensity = 1;
+					break;
+
+				default:
+					break;
+			}
+			Monitor.materials = mats;
 		}
 	}
 }
