@@ -51,6 +51,8 @@ namespace GGJ.Puzzles.ReactionSpeed
 
             if (!started) return;
 
+            if (stage >= challenges.Count) return;
+            
             if (moving)
             {
                 moveProgress += challenges[stage].Item1 * speed * Time.deltaTime;
@@ -104,6 +106,7 @@ namespace GGJ.Puzzles.ReactionSpeed
         {
             base.StartPuzzle();
             containerBar.gameObject.SetActive(true);
+            setStatus(Color.white);
             Invoke(startBarMovement, 1);
         }
 

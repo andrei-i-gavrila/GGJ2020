@@ -66,8 +66,8 @@ namespace GGJ
 
         protected virtual void StartPuzzle()
         {
-            started = true;
             startText.gameObject.SetActive(false);
+            started = true;
         }
 
         protected abstract void generatePuzzleData();

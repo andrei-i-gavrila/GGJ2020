@@ -23,7 +23,7 @@ namespace GGJ.Puzzles.KeySequence
         private RectTransform container;
         
         
-        private List<KeySequenceKeyDisplay> keyDisplays = new List<KeySequenceKeyDisplay>();
+        private List<KeySequenceKeyDisplay> keyDisplays;
     
         protected void Awake()
         {
@@ -40,8 +40,8 @@ namespace GGJ.Puzzles.KeySequence
 
         protected override void StartPuzzle()
         {
-            base.StartPuzzle();
             keyLayout.gameObject.SetActive(true);
+            base.StartPuzzle();
         }
 
         private void Update()
@@ -55,11 +55,15 @@ namespace GGJ.Puzzles.KeySequence
 
             TimePassed += Time.deltaTime;
 
+            
             if (TimePassed > CompletionTime)
             {
                 fail();
                 return;
             }
+            
+            if (CorrectKeyCount >= KeySequence.Count) return;
+
 
             if (arrowKeys.Any(Input.GetKeyDown))
             {
@@ -83,8 +87,9 @@ namespace GGJ.Puzzles.KeySequence
 
         protected override void generatePuzzleData()
         {
-            clearDisplayedKeys();
+            keyLayout.gameObject.SetActive(true);
 
+            clearDisplayedKeys();
 
             var keyPossibilities = new[] {KeyCode.UpArrow, KeyCode.RightArrow, KeyCode.DownArrow, KeyCode.LeftArrow};
             KeySequence = new List<KeyCode>();
@@ -98,6 +103,8 @@ namespace GGJ.Puzzles.KeySequence
             }
 
             createDisplayedKeys();
+            keyLayout.gameObject.SetActive(false);
+
         }
 
         protected override void resetPuzzle()
@@ -112,16 +119,13 @@ namespace GGJ.Puzzles.KeySequence
 
         private void clearDisplayedKeys()
         {
-            for (var i = keyLayout.transform.childCount - 1; i >= 0; i--)
-            {
-                Destroy(keyLayout.transform.GetChild(i).gameObject);
-            }
+            keyDisplays?.ForEach(k => DestroyImmediate(k.gameObject));
         }
 
 
         private void showDisplayedKeys()
         {
-            for (var i = 0; i < KeySequence.Count; i++)
+            for (var i = 0; i < keyDisplays.Count; i++)
             {
                 if (i < CorrectKeyCount) keyDisplays[i].SetCorrect();
                 else keyDisplays[i].SetNormal();

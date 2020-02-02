@@ -65,8 +65,8 @@ namespace GGJ.Rooms
 		    // puzzleIds.Add(Constants.SIMON_ID);
 		    // puzzleIds.Add(Constants.JIGSAW_ID);
 		    // puzzleIds.Add(Constants.MEMORY_ID);
-		    // puzzleIds.Add(Constants.KEYSEQUENCE_ID);
-			puzzleIds.Add(Constants.REACTION_SPEED_ID);
+		    puzzleIds.Add(Constants.KEYSEQUENCE_ID);
+			// puzzleIds.Add(Constants.REACTION_SPEED_ID);
 		}
 
 		private void ManageEntrances()
