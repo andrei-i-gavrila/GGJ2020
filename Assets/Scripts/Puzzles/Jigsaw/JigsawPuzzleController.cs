@@ -1,5 +1,5 @@
-using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -22,7 +22,6 @@ namespace GGJ.Puzzles.Jigsaw
 		private int puzzleHeight = 400;
 		private List<JigsawPiece> pieces = new List<JigsawPiece>();
 		private RectTransform jigsawRoot;
-
 		public override string PuzzleId => Constants.JIGSAW_ID;
 
 		protected void Awake()
@@ -74,6 +73,8 @@ namespace GGJ.Puzzles.Jigsaw
 
 		private void generatePuzzleData()
 		{
+			var stopWatch = new Stopwatch();
+			stopWatch.Start();
 			var pieceCount = (int)Mathf.Lerp(5, 15, difficulty / 10f);
 			var thresholdDistance = puzzleHeight * puzzleWidth / (pieceCount * Mathf.PI);
 
@@ -110,6 +111,10 @@ namespace GGJ.Puzzles.Jigsaw
 				}
 			}
 
+			stopWatch.Stop();
+			UnityEngine.Debug.LogError($"Puzzle-generation {stopWatch.Elapsed}");
+			stopWatch.Reset();
+			stopWatch.Start();
 
 			var centerOffset = new Vector2Int(puzzleWidth / 2, puzzleHeight / 2);
 			for (var i = 0; i < centers.Count; i++)
@@ -122,6 +127,11 @@ namespace GGJ.Puzzles.Jigsaw
 				piece.Init(center - centerOffset, new Vector2Int(Random.Range(-puzzleWidth / 3, puzzleWidth / 3), Random.Range(-puzzleHeight / 3, puzzleHeight / 3)), pixelsPerCenter[i]);
 				pieces.Add(piece);
 			}
+
+			stopWatch.Stop();
+			UnityEngine.Debug.LogError($"Creatin  {stopWatch.Elapsed}");
+			stopWatch.Reset();
+			stopWatch.Start();
 
 			resetPuzzle();
 		}
@@ -142,7 +152,7 @@ namespace GGJ.Puzzles.Jigsaw
 		private RectTransform _rectTransform;
 		public bool correct;
 		private Texture2D _texture;
-
+		private List<Vector2Int> cardinals = new List<Vector2Int>() { new Vector2Int(0, -2), new Vector2Int(0, 2), new Vector2Int(-2, 0), new Vector2Int(2, 0) };
 		public void Init(Vector2Int correctCenter, Vector2Int center, HashSet<Vector2Int> pixelsOffsets)
 		{
 			CorrectCenter = correctCenter;
@@ -175,10 +185,7 @@ namespace GGJ.Puzzles.Jigsaw
 			foreach (var offset in pixelOffsets)
 			{
 				var pixel = offset - minCorner;
-
-				var isBorder = new[] { Vector2Int.down, Vector2Int.right, Vector2Int.up, Vector2Int.left }.Select(o => o + o).Any(o => !pixelOffsets.Contains(o + offset));
-
-				colors[pixel.y * width + pixel.x] = isBorder ? Color.black : Color.white;
+				colors[pixel.y * width + pixel.x] = Color.white;
 			}
 
 			_texture.SetPixels(colors);
