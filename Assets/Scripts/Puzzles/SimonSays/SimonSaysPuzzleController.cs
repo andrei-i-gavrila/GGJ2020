@@ -8,8 +8,11 @@ using Random = UnityEngine.Random;
 
 namespace GGJ.Puzzles.SimonSays
 {
-    public class SimonSaysPuzzleController : BaseBehaviour
+    public class SimonSaysPuzzleController : BasePuzzleController
     {
+        public override string PuzzleId => Constants.SIMON_ID;
+
+
         public List<KeyCode> KeySequence;
         public float MaxTime;
 
@@ -18,17 +21,12 @@ namespace GGJ.Puzzles.SimonSays
         private int stage;
 
 
-        public float difficulty = 1f;
-
         private Image progressBar;
-        private TextMeshProUGUI startText;
         private SimonSaysKeyDisplay up;
         private SimonSaysKeyDisplay down;
         private SimonSaysKeyDisplay left;
         private SimonSaysKeyDisplay right;
 
-        private bool opened;
-        private bool started;
         private bool waitingInput;
 
         protected void Awake()
@@ -51,12 +49,13 @@ namespace GGJ.Puzzles.SimonSays
             if (!started) return;
 
             if (!waitingInput) return;
-            
+
             TimePassed += Time.deltaTime;
 
             if (TimePassed > MaxTime)
             {
                 fail();
+                return;
             }
 
             if (Input.GetKeyDown(KeySequence[CorrectKeyCount]))
@@ -64,7 +63,7 @@ namespace GGJ.Puzzles.SimonSays
                 var keyDisplay = getKeyDisplay(KeySequence[CorrectKeyCount]);
                 keyDisplay.SetPressed();
                 Invoke(keyDisplay.SetNormal, .5f);
-                
+
                 CorrectKeyCount++;
                 if (CorrectKeyCount == stage)
                 {
@@ -72,12 +71,11 @@ namespace GGJ.Puzzles.SimonSays
                     if (stage > KeySequence.Count)
                     {
                         completed();
+                        return;
                     }
-                    else
-                    {
-                        TimePassed = 0;
-                        StartCoroutine(showHints());
-                    }
+
+                    TimePassed = 0;
+                    StartCoroutine(showHints());
                 }
             }
             else if (Input.anyKeyDown)
@@ -86,32 +84,13 @@ namespace GGJ.Puzzles.SimonSays
             }
         }
 
-        private void fail()
-        {
-            resetPuzzle();
-        }
 
-        private void completed()
+        protected override void StartPuzzle()
         {
-            resetPuzzle();
-        }
-
-        public void Open()
-        {
-            generatePuzzleData();
-            opened = true;
-        }
-
-        private void StartPuzzle()
-        {
-            startText.gameObject.SetActive(false);
-            started = true;
-
+            base.StartPuzzle();
             StartCoroutine(showHints());
         }
 
-
-        
 
         private IEnumerator showHints()
         {
@@ -121,7 +100,7 @@ namespace GGJ.Puzzles.SimonSays
             for (var i = 0; i < stage; i++)
             {
                 var keyDisplay = getKeyDisplay(KeySequence[i]);
-                
+
                 keyDisplay.SetHint();
                 yield return new WaitForSeconds(.5f);
                 keyDisplay.SetNormal();
@@ -133,7 +112,7 @@ namespace GGJ.Puzzles.SimonSays
             CorrectKeyCount = 0;
         }
 
-        private void generatePuzzleData()
+        protected override void generatePuzzleData()
         {
             var keyPossibilities = new[] {KeyCode.UpArrow, KeyCode.RightArrow, KeyCode.DownArrow, KeyCode.LeftArrow};
             KeySequence = new List<KeyCode>();
@@ -146,25 +125,25 @@ namespace GGJ.Puzzles.SimonSays
             {
                 KeySequence.Add(keyPossibilities[Random.Range(0, keyPossibilities.Length)]);
             }
-
-            resetPuzzle();
         }
 
         private SimonSaysKeyDisplay getKeyDisplay(KeyCode code)
         {
-            if (code == KeyCode.UpArrow) return up;
-            if (code == KeyCode.LeftArrow) return left;
-            if (code == KeyCode.RightArrow) return right;
-            return down;
+            switch (code)
+            {
+                case KeyCode.UpArrow: return up;
+                case KeyCode.LeftArrow: return left;
+                case KeyCode.RightArrow: return right;
+                default: return down;
+            }
         }
 
-        private void resetPuzzle()
+        protected override void resetPuzzle()
         {
+            base.resetPuzzle();
             TimePassed = 0;
             CorrectKeyCount = 0;
-            started = false;
             stage = 1;
-            startText.gameObject.SetActive(true);
         }
     }
 }

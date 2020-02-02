@@ -11,24 +11,20 @@ using Random = UnityEngine.Random;
 
 namespace GGJ.Puzzles.ReactionSpeed
 {
-    public class ReactionSpeedPuzzleController : BaseBehaviour
+    public class ReactionSpeedPuzzleController : BasePuzzleController
     {
-        public float difficulty = 1f;
+        public override string PuzzleId => Constants.REACTION_SPEED_ID;
 
-
+        
         private List<Pair<int, float>> challenges;
         private float maxError;
         private float speed;
         private float errorDecrease;
         private float currentError;
 
-        private TextMeshProUGUI startText;
-
-        private bool opened;
-        private bool started;
-        private int stage = 0;
-        private bool moving = false;
-        private float moveProgress = 0f;
+        private int stage;
+        private bool moving;
+        private float moveProgress;
 
 
         private RectTransform containerBar;
@@ -51,8 +47,7 @@ namespace GGJ.Puzzles.ReactionSpeed
             if (Input.GetKeyUp(KeyCode.Space) && !started) StartPuzzle();
 
             if (!started) return;
-
-
+            
             if (moving)
             {
                 moveProgress += challenges[stage].Item1 * speed * Time.deltaTime;
@@ -60,6 +55,7 @@ namespace GGJ.Puzzles.ReactionSpeed
                 if (moveProgress > 1f || moveProgress < 0)
                 {
                     fail();
+                    return;
                 }
                 else if (Input.GetKeyDown(KeyCode.Space))
                 {
@@ -70,20 +66,22 @@ namespace GGJ.Puzzles.ReactionSpeed
                         if (stage == challenges.Count)
                         {
                             completed();
+                            return;
                         }
                         else
                         {
                             currentError *= errorDecrease;
                             moveProgress = challenges[stage].Item1 < 0 ? 1f : 0f;
+                            moving = false;
                             Invoke(startBarMovement, 1);
                         }
                     }
                     else
                     {
                         fail();
+                        return;
                     }
 
-                    moving = false;
                 }
             }
 
@@ -92,29 +90,10 @@ namespace GGJ.Puzzles.ReactionSpeed
 
             sliderRect.anchoredPosition = new Vector2(Mathf.Lerp(sliderRect.sizeDelta.x / 2 - containerBar.sizeDelta.x / 2, containerBar.sizeDelta.x / 2 - sliderRect.sizeDelta.x / 2f, moveProgress), 0);
         }
-
-        private void fail()
+        
+        protected override void StartPuzzle()
         {
-            resetPuzzle();
-        }
-
-        private void completed()
-        {
-            resetPuzzle();
-        }
-
-        public void Open()
-        {
-            generatePuzzleData();
-            opened = true;
-        }
-
-        private void StartPuzzle()
-        {
-            startText.gameObject.SetActive(false);
-            started = true;
-
-
+            base.StartPuzzle();
             Invoke(startBarMovement, 1);
         }
 
@@ -124,7 +103,7 @@ namespace GGJ.Puzzles.ReactionSpeed
         }
 
 
-        private void generatePuzzleData()
+        protected override void generatePuzzleData()
         {
             var challengeCount = (int) Mathf.Lerp(2, 5, difficulty / 10f);
             challenges = new List<Pair<int, float>>(challengeCount);
@@ -139,18 +118,16 @@ namespace GGJ.Puzzles.ReactionSpeed
 
             maxError = Mathf.Lerp(0.05f, 0.01f, difficulty / 10f);
             errorDecrease = 1 - difficulty / 100f;
-            resetPuzzle();
         }
 
 
-        private void resetPuzzle()
+        protected override void resetPuzzle()
         {
-            started = false;
+            base.resetPuzzle();
             moving = false;
             stage = 0;
             currentError = maxError;
             moveProgress = challenges[0].Item1 < 0 ? 1f : 0f;
-            startText.gameObject.SetActive(true);
         }
     }
 }

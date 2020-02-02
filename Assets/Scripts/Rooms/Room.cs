@@ -51,7 +51,7 @@ namespace GGJ.Rooms
 
 		private void SetPuzzlesIds()
 		{
-			puzzleIds.Add(Constants.JIGSAW_ID);
+			puzzleIds.Add(Constants.SIMON_ID);
 		}
 
 		private void ManageEntrances()
