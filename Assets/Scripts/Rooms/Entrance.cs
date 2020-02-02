@@ -7,16 +7,41 @@ namespace GGJ.Rooms
 	public class Entrance : BaseBehaviour
 	{
 		[SerializeField] private Transform slidingDoor;
-		private const float OPEN_DURATION = 0.5f;
+		[SerializeField] private Material closedLight;
+		[SerializeField] private Material openedLight;
+		[SerializeField] private List<MeshRenderer> Lights;
+
+		private const float OPEN_DURATION = 0.3f;
 		private const float OPEN_DISTANCE = 3f;
+		private DoorCloser DoorCloser;
 
 		public Pair<Room, Room> ConnectedRooms = new Pair<Room, Room>();
 		public Dictionary<Room, Direction> EntranceDirections = new Dictionary<Room, Direction>();
 		private List<string> unlockConditions = new List<string>();
 		private Tween doorTween;
-
-		public bool Locked { get; set; } = true;
+		private DoorState doorState = DoorState.Closed;
+		private bool locked = true;
+		public bool Locked
+		{
+			get
+			{
+				return locked;
+			}
+			set
+			{
+				locked = value;
+				SetLights();
+			}
+		}
 		private bool runned = false;
+
+		private void Awake()
+		{
+			Locked = true;
+			DoorCloser = GetComponentInChildren<DoorCloser>();
+			DoorCloser.OnExit += CloseDoor;
+		}
+
 		public void SetDirectionForRoom(Room room, Direction direction)
 		{
 			if (!IsRoomInThisEntrance(room))
@@ -95,14 +120,6 @@ namespace GGJ.Rooms
 			ConnectedRooms.Item2?.gameObject.SetActive(true);
 		}
 
-		private void OnTriggerExit(Collider other)
-		{
-			if (Locked)
-				return;
-
-			CloseDoor();
-		}
-
 		private void OnUnlock()
 		{
 			if (runned)
@@ -126,28 +143,57 @@ namespace GGJ.Rooms
 
 		private void OpenDoor()
 		{
-			if (doorTween != null && doorTween.active)
+			if (doorState == DoorState.Open)
 			{
+				return;
+			}
+
+			if (doorState == DoorState.InTransition && doorTween != null && doorTween.active)
+			{
+				doorTween.onComplete = null;
 				doorTween.Kill();
 				doorTween = null;
 			}
 
 			var remainingDistance = OPEN_DISTANCE - transform.position.y;
 			var remainingTime = OPEN_DURATION * (remainingDistance / OPEN_DISTANCE);
-			slidingDoor.DOMoveY(OPEN_DISTANCE, remainingTime);
+			slidingDoor.DOMoveY(OPEN_DISTANCE, remainingTime).OnComplete(() => SetDoorState(DoorState.Open));
+			doorState = DoorState.InTransition;
 		}
 
 		private void CloseDoor()
 		{
-			if (doorTween != null && doorTween.active)
+			if (doorState == DoorState.Closed)
 			{
+				return;
+			}
+
+			if (doorState == DoorState.InTransition && doorTween != null && doorTween.active)
+			{
+				doorTween.onComplete = null;
 				doorTween.Kill();
 				doorTween = null;
 			}
 
-			var remainingDistance = transform.position.y;
+			var remainingDistance = slidingDoor.position.y;
 			var remainingTime = OPEN_DURATION * (remainingDistance / OPEN_DISTANCE);
-			slidingDoor.DOMoveY(0, remainingTime);
+			slidingDoor.DOMoveY(0, remainingTime).OnComplete(() => SetDoorState(DoorState.Closed));
+			doorState = DoorState.InTransition;
+		}
+
+		private void SetDoorState(DoorState doorState)
+		{
+			this.doorState = doorState;
+		}
+
+		private void SetLights()
+		{
+			foreach (var light in Lights)
+			{
+				var materials = light.materials;
+				materials[0] = Locked ? closedLight : openedLight;
+				light.materials = materials;
+			}
 		}
 	}
 }

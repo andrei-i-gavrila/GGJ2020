@@ -28,12 +28,12 @@ namespace GGJ.UI
 
 		private void OnConsoleUnlocked(Console console)
 		{
-			var text = "Console " + console.Id + " in room " + console.Room.RoomId + " has been unlocked";
+			var text = "Console " + console.Id + " in room " + console.Room.RoomId + " has been repaired";
 			ShowText(text);
 		}
 		private void OnEntranceUnlocked(Entrance entrance)
 		{
-			var text = "The " + entrance.EntranceDirections[entrance.ConnectedRooms.Item1] + " door from " + entrance.ConnectedRooms.Item1.RoomId + " has been unlocked";
+			var text = "The " + entrance.EntranceDirections[entrance.ConnectedRooms.Item1] + " door from " + entrance.ConnectedRooms.Item1.RoomId + " has been repaired";
 			ShowText(text);
 		}
 

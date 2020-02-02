@@ -1,10 +1,12 @@
 ﻿using GGJ.Rooms;
+using TMPro;
 using UnityEngine;
 
 namespace GGJ
 {
 	public class Console : BaseInteractable
 	{
+		[SerializeField] private TextMeshPro consoleName;
 		public ConsoleState ConsoleState { get; private set; } = ConsoleState.Interactable;
 		public string Id { get; private set; }
 		public Room Room;
@@ -23,6 +25,7 @@ namespace GGJ
 		public void SetConsoleId(string id)
 		{
 			Id = id;
+			consoleName.text = "Console " + id;
 		}
 
 		public void SetRoom(Room room)
