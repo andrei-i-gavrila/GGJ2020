@@ -5,7 +5,7 @@ namespace GGJ
 {
 	public class InteractablesManager : BaseBehaviour
 	{
-		private const float INTERACTION_DISTANCE_SQUARED = 4f;
+		private const float INTERACTION_DISTANCE_SQUARED = 10f;
 		public BaseInteractable CurrentInteractable { get; private set; }
 		public Action<BaseInteractable> OnCurrentInteractableChanged;
 
