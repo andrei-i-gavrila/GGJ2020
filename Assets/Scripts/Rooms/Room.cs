@@ -114,7 +114,6 @@ namespace GGJ.Rooms
 		{
 			var console = Instantiate(Game.PrefabsManager.Console, consolePosition.transform.position, consolePosition.GetRotation(), transform);
 			console.SetPuzzleId(puzzleIds.GetRandomValue());
-
 			//Set the console state
 			if (Game.ConsolesManager.GetNumberOfConsolesWithState(ConsoleState.Interactable) == 0)
 			{
@@ -125,7 +124,6 @@ namespace GGJ.Rooms
 				console.SetConsoleState(Random.value < 0.25f ? ConsoleState.Locked : ConsoleState.Interactable);
 			}
 			console.SetRoom(this);
-
 			Game.ConsolesManager.AddConsole(console);
 		}
 

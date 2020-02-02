@@ -33,7 +33,7 @@ namespace GGJ.UI
 		}
 		private void OnEntranceUnlocked(Entrance entrance)
 		{
-			var text = "The " + entrance.EntranceDirections[entrance.ConnectedRooms.Item1] + " door from room " + entrance.ConnectedRooms.Item1.RoomId + " has been unlocked";
+			var text = "The " + entrance.EntranceDirections[entrance.ConnectedRooms.Item1] + " door from " + entrance.ConnectedRooms.Item1.RoomId + " has been unlocked";
 			ShowText(text);
 		}
 
