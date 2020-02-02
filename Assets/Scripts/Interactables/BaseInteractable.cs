@@ -20,7 +20,7 @@ namespace GGJ
 			this.conditions = conditions;
 		}
 
-		public bool CanBeInteractedWith()
+		public virtual bool CanBeInteractedWith()
 		{
 			return conditions.Count == 0 || Game.ConditionsManager.CheckMany(conditions);
 		}
