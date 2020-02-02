@@ -56,8 +56,8 @@ namespace GGJ.Puzzles.Memory
             pairCount = Game.Instance.DificultyManager.GetNumberOfMemoryPairs();
             tiles = new List<MemoryPiece>(2 * pairCount);
 
-            var availSize = tilesContainer.sizeDelta.x * tilesContainer.sizeDelta.y;
-            var tileSize = Mathf.Sqrt(availSize / (pairCount * 2)) * 0.7f;
+            var availSize = tilesContainer.rect.width * tilesContainer.rect.height;
+            var tileSize = Mathf.Sqrt(availSize / (pairCount * 2)) * 0.5f;
 
             _gridLayoutGroup.cellSize = Vector2.one * tileSize;
 

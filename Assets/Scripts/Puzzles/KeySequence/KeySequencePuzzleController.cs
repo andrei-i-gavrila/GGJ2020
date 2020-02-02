@@ -40,8 +40,8 @@ namespace GGJ.Puzzles.KeySequence
 
         protected override void StartPuzzle()
         {
-            keyLayout.gameObject.SetActive(true);
             base.StartPuzzle();
+            keyLayout.gameObject.SetActive(true);
         }
 
         private void Update()
@@ -79,6 +79,7 @@ namespace GGJ.Puzzles.KeySequence
                 else
                 {
                     fail();
+                    return;
                 }
             }
 
@@ -92,9 +93,9 @@ namespace GGJ.Puzzles.KeySequence
             clearDisplayedKeys();
 
             var keyPossibilities = new[] {KeyCode.UpArrow, KeyCode.RightArrow, KeyCode.DownArrow, KeyCode.LeftArrow};
+            var keyAmount = Game.Instance.DificultyManager.GetNumberOfKeysInSequence();
             KeySequence = new List<KeyCode>();
 
-            var keyAmount = Game.Instance.DificultyManager.GetNumberOfKeysInSequence();
             CompletionTime = keyAmount * Game.Instance.DificultyManager.GetTimePerKeyInKeySequence();
 
             for (var i = 0; i < keyAmount; i++)

@@ -7,7 +7,6 @@ namespace GGJ
 {
     public abstract class BasePuzzleController : BaseBehaviour
     {
-        public float difficulty = 1f;
         protected bool opened;
         protected bool started;
         protected TextMeshProUGUI startText;
@@ -66,6 +65,7 @@ namespace GGJ
 
         protected virtual void StartPuzzle()
         {
+            puzzleContainer.gameObject.SetActive(true);
             startText.gameObject.SetActive(false);
             started = true;
         }
