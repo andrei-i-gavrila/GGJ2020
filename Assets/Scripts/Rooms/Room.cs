@@ -51,7 +51,7 @@ namespace GGJ.Rooms
 
 		private void SetPuzzlesIds()
 		{
-			puzzleIds.Add(Constants.JIGSAW_ID);
+			puzzleIds.Add(Constants.SIMON_ID);
 		}
 
 		private void ManageEntrances()
@@ -99,6 +99,18 @@ namespace GGJ.Rooms
 		{
 			var console = Instantiate(Game.PrefabsManager.Console, consolePosition.transform.position, consolePosition.GetRotation(), transform);
 			console.SetPuzzleId(puzzleIds.GetRandomValue());
+
+			//Set the console state
+			if (Game.ConsolesManager.GetNumberOfConsolesWithState(ConsoleState.Interactable) == 0 ||
+				Game.ConsolesManager.GetNumberOfConsolesWithState(ConsoleState.Locked) == 0)
+			{
+				console.SetConsoleState(ConsoleState.Interactable);
+			}
+			else
+			{
+				console.SetConsoleState(Random.value < 0.25f ? ConsoleState.Locked : ConsoleState.Interactable);
+			}
+			Game.ConsolesManager.AddConsole(console);
 		}
 
 		private void OnTriggerEnter(Collider other)

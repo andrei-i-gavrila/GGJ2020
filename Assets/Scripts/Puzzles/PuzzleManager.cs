@@ -7,6 +7,7 @@ namespace GGJ.Puzzles
 	public class PuzzleManager : BaseBehaviour
 	{
 		public Action<BasePuzzleController> OnPuzzleStarted;
+		public Action<bool> OnPuzzleEnd;
 		private Dictionary<string, BasePuzzleController> puzzleControllers = new Dictionary<string, BasePuzzleController>();
 
 		private void Awake()

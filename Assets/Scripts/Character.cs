@@ -5,7 +5,13 @@ namespace GGJ
 	public class Character : BaseBehaviour
 	{
 		public bool CanInteract { get; set; } = true;
+		public bool CanMove { get; set; } = true;
 
+		private void Awake()
+		{
+			Game.PuzzleManager.OnPuzzleStarted += (_) => CanMove = false;
+			Game.PuzzleManager.OnPuzzleEnd += (_) => CanMove = true;
+		}
 		private void Update()
 		{
 			if (!CanInteract)

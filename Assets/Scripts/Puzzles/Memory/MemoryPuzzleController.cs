@@ -12,15 +12,10 @@ using Random = UnityEngine.Random;
 
 namespace GGJ.Puzzles.Memory
 {
-    public class MemoryPuzzleController : BaseBehaviour
+    public class MemoryPuzzleController : BasePuzzleController
     {
-        public float difficulty = 1f;
-
-        private TextMeshProUGUI startText;
-
-        private bool opened;
-        private bool started;
-
+        public override string PuzzleId => Constants.MEMORY_ID;
+        
         private int pairCount;
         private RectTransform tilesContainer;
 
@@ -28,6 +23,7 @@ namespace GGJ.Puzzles.Memory
         private int correctPairs = 0;
         private bool waiting;
         private GridLayoutGroup _gridLayoutGroup;
+
 
         protected void Awake()
         {
@@ -43,32 +39,16 @@ namespace GGJ.Puzzles.Memory
             if (Input.GetKeyUp(KeyCode.Space) && !started) StartPuzzle();
         }
 
-        private void fail()
-        {
-            resetPuzzle();
-        }
 
-        private void completed()
+        protected override void StartPuzzle()
         {
-            resetPuzzle();
-        }
-
-        public void Open()
-        {
-            generatePuzzleData();
-            opened = true;
-            tilesContainer.gameObject.SetActive(false);
-        }
-
-        private void StartPuzzle()
-        {
-            startText.gameObject.SetActive(false);
+            base.StartPuzzle();
+            
             tilesContainer.gameObject.SetActive(true);
-            started = true;
         }
 
 
-        private void generatePuzzleData()
+        protected override void generatePuzzleData()
         {
             pairCount = (int) Mathf.Lerp(3, 18, difficulty / 10f);
 
@@ -169,10 +149,9 @@ namespace GGJ.Puzzles.Memory
         }
 
 
-        private void resetPuzzle()
+        protected override void resetPuzzle()
         {
-            started = false;
-            startText.gameObject.SetActive(true);
+            base.resetPuzzle();
             tilesContainer.gameObject.SetActive(false);
         }
     }

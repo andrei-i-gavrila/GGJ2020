@@ -52,11 +52,13 @@ namespace GGJ
 			}, 1);
 		}
 
-		public DificultyManager DificultyManager { get; private set; }
 		public ConditionsManager ConditionsManager { get; private set; } = new ConditionsManager();
+		public ConsolesManager ConsolesManager { get; private set; } = new ConsolesManager();
+
+		public DificultyManager DificultyManager { get; private set; }
 		public InteractablesManager InteractablesManager { get; private set; }
 		public PrefabsManager PrefabsManager { get; private set; }
-		public RoomManager RoomManager;
+		public RoomManager RoomManager { get; private set; }
 		public PuzzleManager PuzzleManager { get; set; }
 		public Character Character { get; private set; }
 		public int CurrentDificulty { get; private set; } = 0;

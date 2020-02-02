@@ -12,19 +12,24 @@ namespace GGJ
         public float RunningMultiplier = 1.5f;
         private float _pitch;
         private Rigidbody _rb;
+		private Character Character;
 
 
         private void Awake()
         {
             _rb = GetComponent<Rigidbody>();
             _rb.freezeRotation = true;
+			Character = GetComponent<Character>();
 
-            Cursor.visible = false;
+			Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
         }
 
         private void FixedUpdate()
         {
+			if (!Character.CanMove)
+				return;
+
             CameraLook();
             BodyRotation();
             BodyMovement();
