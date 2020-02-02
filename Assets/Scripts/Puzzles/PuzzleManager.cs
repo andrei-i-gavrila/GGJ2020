@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -5,6 +6,7 @@ namespace GGJ.Puzzles
 {
 	public class PuzzleManager : BaseBehaviour
 	{
+		public Action<BasePuzzleController> OnPuzzleStarted;
 		private Dictionary<string, BasePuzzleController> puzzleControllers = new Dictionary<string, BasePuzzleController>();
 
 		private void Awake()
@@ -38,6 +40,7 @@ namespace GGJ.Puzzles
 		{
 			basePuzzleController?.gameObject.SetActive(true);
 			basePuzzleController?.Open();
+			OnPuzzleStarted?.Invoke(basePuzzleController);
 		}
 
 		private void HideAllPuzzles()
