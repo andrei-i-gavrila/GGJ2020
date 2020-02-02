@@ -19,6 +19,14 @@ namespace GGJ
 
         public abstract string PuzzleId { get; }
 
+        private void LateUpdate()
+        {
+            if (Input.GetKeyUp(KeyCode.Escape))
+            {
+                completeWithState(false);
+            }
+        }
+
         protected void fail()
         {
             puzzleContainer.gameObject.SetActive(false);
