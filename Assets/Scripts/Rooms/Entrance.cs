@@ -6,23 +6,23 @@ namespace GGJ.Rooms
 	public class Entrance : BaseBehaviour
 	{
 		public Pair<Room, Room> ConnectedRooms = new Pair<Room, Room>();
-		private Dictionary<Room, Direction> entranceDirections = new Dictionary<Room, Direction>();
+		public Dictionary<Room, Direction> EntranceDirections = new Dictionary<Room, Direction>();
 		public bool IsLockedByDefault { get; private set; } = true;
 		private List<string> unlockConditions = new List<string>();
-		public bool Locked { get; private set; } = true;
+		public bool Locked { get; set; } = true;
 
 		public void SetDirectionForRoom(Room room, Direction direction)
 		{
 			if (!IsRoomInThisEntrance(room))
 				return;
 
-			if (entranceDirections.ContainsKey(room))
+			if (EntranceDirections.ContainsKey(room))
 			{
-				entranceDirections[room] = direction;
+				EntranceDirections[room] = direction;
 			}
 			else
 			{
-				entranceDirections.Add(room, direction);
+				EntranceDirections.Add(room, direction);
 			}
 		}
 
@@ -43,13 +43,13 @@ namespace GGJ.Rooms
 			if (!IsRoomInThisEntrance(room))
 				return false;
 
-			if (!entranceDirections.ContainsKey(room))
+			if (!EntranceDirections.ContainsKey(room))
 			{
 				Debug.LogError("The entrance direction for this room was not set!");
 				return false;
 			}
 
-			direction = entranceDirections[room];
+			direction = EntranceDirections[room];
 			return true;
 		}
 
