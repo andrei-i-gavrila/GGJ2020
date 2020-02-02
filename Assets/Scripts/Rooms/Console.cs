@@ -14,6 +14,12 @@ namespace GGJ
 		public Light Light;
 		public Renderer Monitor;
 
+		public override void Start()
+		{
+			base.Start();
+			SetConsoleState(ConsoleState);
+		}
+
 		public void SetConsoleId(string id)
 		{
 			Id = id;
