@@ -157,6 +157,9 @@ namespace GGJ.Puzzles.Memory
         protected override void resetPuzzle()
         {
             base.resetPuzzle();
+            correctPairs = 0;
+            currentPiece = null;
+            waiting = false;
             tilesContainer.gameObject.SetActive(false);
         }
     }
