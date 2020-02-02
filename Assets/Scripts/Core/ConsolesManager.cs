@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace GGJ
 {
@@ -11,6 +12,14 @@ namespace GGJ
 			consoles.Add(console);
 		}
 
+		public int GetNumberOfConsolesWithState(ConsoleState consoleState)
+		{
+			return consoles.Count(console => console.ConsoleState == consoleState);
+		}
 
+		public Console GetRandomConsoleWithState(ConsoleState consoleState)
+		{
+			return consoles.Where(console => console.ConsoleState == consoleState).GetRandomValue();
+		}
 	}
 }

@@ -11,6 +11,7 @@
 
 		public override void OnInteract()
 		{
+			Game.Character.CanInteract = false;
 			Game.PuzzleManager.StartPuzzle(puzzleId);
 		}
 

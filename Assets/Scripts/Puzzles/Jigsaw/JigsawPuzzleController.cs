@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -73,8 +72,6 @@ namespace GGJ.Puzzles.Jigsaw
 
 		private void generatePuzzleData()
 		{
-			var stopWatch = new Stopwatch();
-			stopWatch.Start();
 			var pieceCount = (int)Mathf.Lerp(5, 15, difficulty / 10f);
 			var thresholdDistance = puzzleHeight * puzzleWidth / (pieceCount * Mathf.PI);
 
@@ -113,11 +110,6 @@ namespace GGJ.Puzzles.Jigsaw
 				}
 			}
 
-			stopWatch.Stop();
-			UnityEngine.Debug.LogError($"Puzzle-generation {stopWatch.Elapsed}");
-			stopWatch.Reset();
-			stopWatch.Start();
-
 			var centerOffset = new Vector2Int(puzzleWidth / 2, puzzleHeight / 2);
 			for (var i = 0; i < centers.Count; i++)
 			{
@@ -129,11 +121,6 @@ namespace GGJ.Puzzles.Jigsaw
 				piece.Init(center - centerOffset, new Vector2Int(Random.Range(-puzzleWidth / 3, puzzleWidth / 3), Random.Range(-puzzleHeight / 3, puzzleHeight / 3)), pixelsPerCenter[i]);
 				pieces.Add(piece);
 			}
-
-			stopWatch.Stop();
-			UnityEngine.Debug.LogError($"Creatin  {stopWatch.Elapsed}");
-			stopWatch.Reset();
-			stopWatch.Start();
 
 			resetPuzzle();
 		}
@@ -187,7 +174,7 @@ namespace GGJ.Puzzles.Jigsaw
 			foreach (var offset in pixelOffsets)
 			{
 				var pixel = offset - minCorner;
-				colors[pixel.y * width + pixel.x] =  Color.white;
+				colors[pixel.y * width + pixel.x] = Color.white;
 			}
 
 			_texture.SetPixels(colors);
