@@ -107,6 +107,10 @@ namespace GGJ.Puzzles.SimonSays
             base.StartPuzzle();
             
             container.gameObject.SetActive(true);
+            foreach (var arrowKey in arrowKeys)
+            {
+                getKeyDisplay(arrowKey).SetNormal();
+            }
             StartCoroutine(showHints());
         }
 

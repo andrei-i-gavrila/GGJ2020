@@ -9,12 +9,20 @@ namespace GGJ.Puzzles.KeySequence
 {
     public class KeySequenceKeyDisplay : BaseBehaviour
     {
-        private Image Arrow { get; set; }
-
-        private void Awake()
+        private Image Arrow
         {
-            Arrow = transform.Find("Arrow").GetComponent<Image>();
+            get
+            {
+                if (ArrowCached == null)
+                {
+                    ArrowCached = transform.Find("Arrow").GetComponent<Image>();
+                }
+
+                return ArrowCached;
+            }
         }
+
+        private Image ArrowCached;
 
         public void SetCorrect()
         {
