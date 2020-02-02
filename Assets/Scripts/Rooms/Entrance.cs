@@ -7,6 +7,10 @@ namespace GGJ.Rooms
 	public class Entrance : BaseBehaviour
 	{
 		[SerializeField] private Transform slidingDoor;
+		[SerializeField] private Material closedLight;
+		[SerializeField] private Material openedLight;
+		[SerializeField] private List<MeshRenderer> Lights;
+
 		private const float OPEN_DURATION = 0.3f;
 		private const float OPEN_DISTANCE = 3f;
 		private DoorCloser DoorCloser;
@@ -16,11 +20,24 @@ namespace GGJ.Rooms
 		private List<string> unlockConditions = new List<string>();
 		private Tween doorTween;
 		private DoorState doorState = DoorState.Closed;
-		public bool Locked { get; set; } = true;
+		private bool locked = true;
+		public bool Locked
+		{
+			get
+			{
+				return locked;
+			}
+			set
+			{
+				locked = value;
+				SetLights();
+			}
+		}
 		private bool runned = false;
 
 		private void Awake()
 		{
+			Locked = true;
 			DoorCloser = GetComponentInChildren<DoorCloser>();
 			DoorCloser.OnExit += CloseDoor;
 		}
@@ -167,6 +184,16 @@ namespace GGJ.Rooms
 		private void SetDoorState(DoorState doorState)
 		{
 			this.doorState = doorState;
+		}
+
+		private void SetLights()
+		{
+			foreach (var light in Lights)
+			{
+				var materials = light.materials;
+				materials[0] = Locked ? closedLight : openedLight;
+				light.materials = materials;
+			}
 		}
 	}
 }

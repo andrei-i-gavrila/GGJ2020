@@ -104,6 +104,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slidingDoor: {fileID: 2642971132667891729}
+  closedLight: {fileID: 2100000, guid: bd83304f17c04b4499a7569850ba79c1, type: 2}
+  openedLight: {fileID: 2100000, guid: c4d5042a32e024b4d91b4ee0422046ee, type: 2}
+  Lights:
+  - {fileID: 2983155623894190118}
+  - {fileID: 2442260075888778281}
 --- !u!65 &4190270114993365329
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -195,6 +200,18 @@ Transform:
 --- !u!4 &2642971132667891729 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8944737341145283482, guid: b70e9bc4753c53a40bd9c0096d4103c1,
+    type: 3}
+  m_PrefabInstance: {fileID: 6381511635406351243}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &2983155623894190118 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 8208341632119399341, guid: b70e9bc4753c53a40bd9c0096d4103c1,
+    type: 3}
+  m_PrefabInstance: {fileID: 6381511635406351243}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &2442260075888778281 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 8749097270979524514, guid: b70e9bc4753c53a40bd9c0096d4103c1,
     type: 3}
   m_PrefabInstance: {fileID: 6381511635406351243}
   m_PrefabAsset: {fileID: 0}
