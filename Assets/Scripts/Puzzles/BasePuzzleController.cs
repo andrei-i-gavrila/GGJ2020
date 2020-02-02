@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -17,17 +18,20 @@ namespace GGJ
 
         public Action<bool> OnPuzzleCompleted { get; set; }
 
-        public abstract String PuzzleId { get; }
+        public abstract string PuzzleId { get; }
+
 
         protected virtual void fail()
         {
             resetPuzzle();
+            // opened = false;
             OnPuzzleCompleted?.Invoke(false);
         }
 
         protected void completed()
         {
             resetPuzzle();
+            // opened = false;
             OnPuzzleCompleted?.Invoke(true);
         }
 
@@ -42,6 +46,7 @@ namespace GGJ
         protected virtual void StartPuzzle()
         {
             started = true;
+            startText.gameObject.SetActive(false);
         }
 
         protected abstract void generatePuzzleData();
@@ -53,5 +58,7 @@ namespace GGJ
             started = false;
             startText.gameObject.SetActive(true);
         }
+
+        protected static readonly List<KeyCode> arrowKeys = new List<KeyCode> {KeyCode.DownArrow, KeyCode.LeftArrow, KeyCode.UpArrow, KeyCode.RightArrow};
     }
 }

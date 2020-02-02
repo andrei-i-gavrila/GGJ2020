@@ -15,7 +15,7 @@ namespace GGJ.Puzzles.ReactionSpeed
     {
         public override string PuzzleId => Constants.REACTION_SPEED_ID;
 
-        
+
         private List<Pair<int, float>> challenges;
         private float maxError;
         private float speed;
@@ -30,6 +30,7 @@ namespace GGJ.Puzzles.ReactionSpeed
         private RectTransform containerBar;
         private RectTransform sliderRect;
         private RectTransform targetRect;
+        private Image targetRectImage;
 
 
         protected void Awake()
@@ -38,6 +39,7 @@ namespace GGJ.Puzzles.ReactionSpeed
             Utils.GetComponentInChild(transform, "Bar", out containerBar);
             Utils.GetComponentInChild(transform, "Slider", out sliderRect);
             Utils.GetComponentInChild(transform, "Target", out targetRect);
+            targetRectImage = targetRect.GetComponent<Image>();
         }
 
         private void Update()
@@ -47,7 +49,7 @@ namespace GGJ.Puzzles.ReactionSpeed
             if (Input.GetKeyUp(KeyCode.Space) && !started) StartPuzzle();
 
             if (!started) return;
-            
+
             if (moving)
             {
                 moveProgress += challenges[stage].Item1 * speed * Time.deltaTime;
@@ -57,10 +59,13 @@ namespace GGJ.Puzzles.ReactionSpeed
                     fail();
                     return;
                 }
-                else if (Input.GetKeyDown(KeyCode.Space))
+
+                if (Input.GetKeyDown(KeyCode.Space))
                 {
                     if (Mathf.Abs(moveProgress - challenges[stage].Item2) < currentError)
                     {
+                        setStatus(Color.green);
+
                         stage++;
 
                         if (stage == challenges.Count)
@@ -68,20 +73,18 @@ namespace GGJ.Puzzles.ReactionSpeed
                             completed();
                             return;
                         }
-                        else
-                        {
-                            currentError *= errorDecrease;
-                            moveProgress = challenges[stage].Item1 < 0 ? 1f : 0f;
-                            moving = false;
-                            Invoke(startBarMovement, 1);
-                        }
+
+                        currentError *= errorDecrease;
+                        moveProgress = challenges[stage].Item1 < 0 ? 1f : 0f;
+                        moving = false;
+                        Invoke(startBarMovement, 1);
                     }
                     else
                     {
+                        setStatus(Color.red);
                         fail();
                         return;
                     }
-
                 }
             }
 
@@ -90,15 +93,24 @@ namespace GGJ.Puzzles.ReactionSpeed
 
             sliderRect.anchoredPosition = new Vector2(Mathf.Lerp(sliderRect.sizeDelta.x / 2 - containerBar.sizeDelta.x / 2, containerBar.sizeDelta.x / 2 - sliderRect.sizeDelta.x / 2f, moveProgress), 0);
         }
-        
+
+        private void setStatus(Color color)
+        {
+            targetRectImage.color = color;
+            Invoke(() => targetRectImage.color = Color.white, .5f);
+        }
+
         protected override void StartPuzzle()
         {
             base.StartPuzzle();
+            containerBar.gameObject.SetActive(true);
             Invoke(startBarMovement, 1);
         }
 
         private void startBarMovement()
         {
+            targetRectImage.color = Color.white;
+
             moving = true;
         }
 
@@ -124,6 +136,8 @@ namespace GGJ.Puzzles.ReactionSpeed
         protected override void resetPuzzle()
         {
             base.resetPuzzle();
+            containerBar.gameObject.SetActive(false);
+
             moving = false;
             stage = 0;
             currentError = maxError;

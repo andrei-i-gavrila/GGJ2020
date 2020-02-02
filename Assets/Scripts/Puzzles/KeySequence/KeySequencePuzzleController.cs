@@ -1,9 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Random = UnityEngine.Random;
 
 namespace GGJ.Puzzles.KeySequence
 {
@@ -28,7 +26,6 @@ namespace GGJ.Puzzles.KeySequence
             Utils.GetComponentInChild(transform, "KeyLayout", out keyLayout);
             Utils.GetComponentInChild(transform, "ProgressBar", out progressBar);
             Utils.GetComponentInChild(transform, "StartText", out startText);
-            createDisplayedKeys();
         }
 
         private void createDisplayedKeys()
@@ -36,11 +33,16 @@ namespace GGJ.Puzzles.KeySequence
             keyDisplays = KeySequence.Select(code => Instantiate(Resources.Load<GameObject>(KEY_DISPLAY_BASE_PATH + getPrefabToDisplay(code)), keyLayout.transform).AddComponent<KeySequenceKeyDisplay>()).ToList();
         }
 
+        protected override void StartPuzzle()
+        {
+            base.StartPuzzle();
+            keyLayout.gameObject.SetActive(true);
+        }
+
         private void Update()
         {
             if (!opened) return;
             progressBar.fillAmount = Mathf.InverseLerp(CompletionTime, 0f, TimePassed);
-            clearDisplayedKeys();
 
             if (Input.GetKeyUp(KeyCode.Space) && !started) StartPuzzle();
 
@@ -54,19 +56,21 @@ namespace GGJ.Puzzles.KeySequence
                 return;
             }
 
-            if (Input.GetKeyDown(KeySequence[CorrectKeyCount]))
+            if (arrowKeys.Any(Input.GetKeyDown))
             {
-                CorrectKeyCount++;
-                if (CorrectKeyCount == KeySequence.Count)
+                if (Input.GetKeyDown(KeySequence[CorrectKeyCount]))
                 {
-                    completed();
-                    return;
+                    CorrectKeyCount++;
+                    if (CorrectKeyCount == KeySequence.Count)
+                    {
+                        completed();
+                        return;
+                    }
                 }
-            }
-            else if (Input.anyKeyDown)
-            {
-                fail();
-                return;
+                else
+                {
+                    fail();
+                }
             }
 
             showDisplayedKeys();
@@ -74,6 +78,9 @@ namespace GGJ.Puzzles.KeySequence
 
         protected override void generatePuzzleData()
         {
+            clearDisplayedKeys();
+
+
             var keyPossibilities = new[] {KeyCode.UpArrow, KeyCode.RightArrow, KeyCode.DownArrow, KeyCode.LeftArrow};
             KeySequence = new List<KeyCode>();
 
@@ -84,6 +91,8 @@ namespace GGJ.Puzzles.KeySequence
             {
                 KeySequence.Add(keyPossibilities[Random.Range(0, keyPossibilities.Length)]);
             }
+
+            createDisplayedKeys();
         }
 
         protected override void resetPuzzle()
@@ -92,6 +101,7 @@ namespace GGJ.Puzzles.KeySequence
 
             TimePassed = 0;
             CorrectKeyCount = 0;
+            keyLayout.gameObject.SetActive(false);
         }
 
 

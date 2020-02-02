@@ -23,6 +23,11 @@ namespace GGJ.Rooms
 		private Dictionary<Room, List<Direction>> roomDirections = new Dictionary<Room, List<Direction>>();
 		private Dictionary<Room, List<Direction>> roomCompatibleDirections = new Dictionary<Room, List<Direction>>();
 
+		public Entrance GetRandomLockedEntrance()
+		{
+			return entrances.ToList().Where(entrance => entrance.Locked).GetRandomValue();
+		}
+
 		public List<Entrance> GetEntrancesForRoom(Room room)
 		{
 			if (room == null)

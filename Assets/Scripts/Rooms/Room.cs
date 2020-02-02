@@ -51,7 +51,11 @@ namespace GGJ.Rooms
 
 		private void SetPuzzlesIds()
 		{
-			puzzleIds.Add(Constants.SIMON_ID);
+			// puzzleIds.Add(Constants.SIMON_ID);
+			// puzzleIds.Add(Constants.JIGSAW_ID);
+			// puzzleIds.Add(Constants.MEMORY_ID);
+			// puzzleIds.Add(Constants.KEYSEQUENCE_ID);
+			puzzleIds.Add(Constants.REACTION_SPEED_ID);
 		}
 
 		private void ManageEntrances()
@@ -101,8 +105,7 @@ namespace GGJ.Rooms
 			console.SetPuzzleId(puzzleIds.GetRandomValue());
 
 			//Set the console state
-			if (Game.ConsolesManager.GetNumberOfConsolesWithState(ConsoleState.Interactable) == 0 ||
-				Game.ConsolesManager.GetNumberOfConsolesWithState(ConsoleState.Locked) == 0)
+			if (Game.ConsolesManager.GetNumberOfConsolesWithState(ConsoleState.Interactable) == 0)
 			{
 				console.SetConsoleState(ConsoleState.Interactable);
 			}
@@ -110,6 +113,8 @@ namespace GGJ.Rooms
 			{
 				console.SetConsoleState(Random.value < 0.25f ? ConsoleState.Locked : ConsoleState.Interactable);
 			}
+			console.SetRoom(this);
+
 			Game.ConsolesManager.AddConsole(console);
 		}
 
