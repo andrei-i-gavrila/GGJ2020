@@ -7,6 +7,7 @@ namespace GGJ.UI
 	public class UIMessagesManager : BaseBehaviour
 	{
 		private TextMeshProUGUI message;
+		private TextMeshProUGUI roomName;
 		private Coroutine hideMessageCoroutine;
 
 		private void Awake()
@@ -14,8 +15,14 @@ namespace GGJ.UI
 			Initialize();
 		}
 
+		private void Start()
+		{
+			Game.RoomManager.OnRoomEntered += (room, _) => roomName.text = room.RoomId;
+		}
+
 		private void Initialize()
 		{
+			Utils.GetComponentInChild(transform, "RoomName", out roomName);
 			if (!Utils.GetComponentInChild(transform, "message", out message))
 			{
 				Debug.LogError("Component not found!!!");

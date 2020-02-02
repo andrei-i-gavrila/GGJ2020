@@ -10,7 +10,7 @@ namespace GGJ.Rooms
 		private static int roomNumber = 1;
 		public Room CurrentRoom { get; private set; }
 		public Room PreviouseRoom { get; private set; }
-		public Action<Room, Room> OnRoomEntered { get; private set; }
+		public Action<Room, Room> OnRoomEntered { get; set; }
 		public Transform EntrancesParent { get; private set; }
 		public object Utilits { get; private set; }
 
