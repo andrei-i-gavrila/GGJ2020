@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d819c59650599354c916bfd79da4e419, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slidingDoor: {fileID: 2642971132667891729}
 --- !u!65 &4190270114993365329
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -130,6 +131,12 @@ PrefabInstance:
 --- !u!4 &5071437403395273492 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2228985460329011359, guid: b70e9bc4753c53a40bd9c0096d4103c1,
+    type: 3}
+  m_PrefabInstance: {fileID: 6381511635406351243}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &2642971132667891729 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8944737341145283482, guid: b70e9bc4753c53a40bd9c0096d4103c1,
     type: 3}
   m_PrefabInstance: {fileID: 6381511635406351243}
   m_PrefabAsset: {fileID: 0}
