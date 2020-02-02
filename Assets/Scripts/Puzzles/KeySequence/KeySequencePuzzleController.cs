@@ -7,7 +7,7 @@ namespace GGJ.Puzzles.KeySequence
 {
     public class KeySequencePuzzleController : BasePuzzleController
     {
-        protected override Component puzzleContainer => keyLayout;
+        protected override Component puzzleContainer => container;
         public override string PuzzleId => Constants.KEYSEQUENCE_ID;
         public List<KeyCode> KeySequence;
         public float CompletionTime;
@@ -20,13 +20,17 @@ namespace GGJ.Puzzles.KeySequence
         private HorizontalLayoutGroup keyLayout;
         private Image progressBar;
 
+        private RectTransform container;
+        
+        
         private List<KeySequenceKeyDisplay> keyDisplays = new List<KeySequenceKeyDisplay>();
-
+    
         protected void Awake()
         {
             Utils.GetComponentInChild(transform, "KeyLayout", out keyLayout);
             Utils.GetComponentInChild(transform, "ProgressBar", out progressBar);
             Utils.GetComponentInChild(transform, "StartText", out startText);
+            Utils.GetComponentInChild(transform, "Container", out container);
         }
 
         private void createDisplayedKeys()
@@ -85,8 +89,8 @@ namespace GGJ.Puzzles.KeySequence
             var keyPossibilities = new[] {KeyCode.UpArrow, KeyCode.RightArrow, KeyCode.DownArrow, KeyCode.LeftArrow};
             KeySequence = new List<KeyCode>();
 
-            var keyAmount = (int) Mathf.Lerp(5f, 10f, difficulty / 10f);
-            CompletionTime = keyAmount * Mathf.Lerp(1f, 0.3f, difficulty / 10f);
+            var keyAmount = Game.Instance.DificultyManager.GetNumberOfKeysInSequence();
+            CompletionTime = keyAmount * Game.Instance.DificultyManager.GetTimePerKeyInKeySequence();
 
             for (var i = 0; i < keyAmount; i++)
             {

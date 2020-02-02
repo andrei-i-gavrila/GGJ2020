@@ -24,6 +24,7 @@ namespace GGJ.Puzzles.Memory
         private int correctPairs = 0;
         private bool waiting;
         private GridLayoutGroup _gridLayoutGroup;
+        private List<MemoryPiece> tiles;
 
 
         protected void Awake()
@@ -51,8 +52,9 @@ namespace GGJ.Puzzles.Memory
 
         protected override void generatePuzzleData()
         {
-            pairCount = (int) Mathf.Lerp(3, 18, difficulty / 10f);
-
+            tiles?.ForEach(t => Destroy(t.gameObject));
+            pairCount = Game.Instance.DificultyManager.GetNumberOfMemoryPairs();
+            tiles = new List<MemoryPiece>(2 * pairCount);
 
             var availSize = tilesContainer.sizeDelta.x * tilesContainer.sizeDelta.y;
             var tileSize = Mathf.Sqrt(availSize / (pairCount * 2)) * 0.7f;
@@ -101,6 +103,8 @@ namespace GGJ.Puzzles.Memory
                     tile.faceImageRectTransform.sizeDelta = new Vector2(tileSize * 0.8f, tileSize * 0.8f);
                     tile.config = config;
                     tile.OnClicked += () => TileClicked(tile);
+
+                    tiles.Add(tile);
                 }
             }
 

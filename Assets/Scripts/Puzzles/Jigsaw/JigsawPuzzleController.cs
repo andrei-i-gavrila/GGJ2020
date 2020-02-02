@@ -56,7 +56,8 @@ namespace GGJ.Puzzles.Jigsaw
         {
             pieces?.ForEach(o => Destroy(o.gameObject));
             pieces = new List<JigsawPiece>();
-            var pieceCount = (int) Mathf.Lerp(2, 15, difficulty / 10f);
+            var pieceCount = Game.Instance.DificultyManager.GetNumberOfJigsawPieces();
+            
             var thresholdDistance = puzzleHeight * puzzleWidth / (pieceCount * Mathf.PI);
 
             var centers = new List<Vector2Int>();
