@@ -40,7 +40,7 @@ namespace GGJ
 
 		public override void OnInteract()
 		{
-			Game.PuzzleManager.StartPuzzle(puzzleId);
+			Game.PuzzleManager.StartPuzzle(puzzleId, this);
 		}
 
 		public override bool CanBeInteractedWith()
