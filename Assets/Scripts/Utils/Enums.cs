@@ -7,4 +7,11 @@
 		East,
 		West
 	}
+
+	public enum ConsoleState
+	{
+		Locked,
+		Interactable,
+		Resolved
+	}
 }
