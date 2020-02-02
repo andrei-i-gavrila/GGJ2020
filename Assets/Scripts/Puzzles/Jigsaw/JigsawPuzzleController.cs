@@ -88,15 +88,17 @@ namespace GGJ.Puzzles.Jigsaw
 				if (good) centers.Add(nextCenter);
 			}
 
-			var pixelsPerCenter = centers.Select(center => new HashSet<Vector2Int>()).ToList();
+			var pixelsPerCenter = centers.Select(center => new List<Vector2Int>()).ToList();
+			var minIndex = -1;
+			var minDistance = int.MaxValue;
+
 			for (var x = 0; x < puzzleWidth; x++)
 			{
 				for (var y = 0; y < puzzleHeight; y++)
 				{
 					var pos = new Vector2Int(x, y);
-
-					var minIndex = -1;
-					var minDistance = int.MaxValue;
+					minIndex = -1;
+					minDistance = int.MaxValue;
 
 					for (var i = 0; i < centers.Count; i++)
 					{
@@ -153,7 +155,7 @@ namespace GGJ.Puzzles.Jigsaw
 		public bool correct;
 		private Texture2D _texture;
 		private List<Vector2Int> cardinals = new List<Vector2Int>() { new Vector2Int(0, -2), new Vector2Int(0, 2), new Vector2Int(-2, 0), new Vector2Int(2, 0) };
-		public void Init(Vector2Int correctCenter, Vector2Int center, HashSet<Vector2Int> pixelsOffsets)
+		public void Init(Vector2Int correctCenter, Vector2Int center, List<Vector2Int> pixelsOffsets)
 		{
 			CorrectCenter = correctCenter;
 
@@ -161,7 +163,7 @@ namespace GGJ.Puzzles.Jigsaw
 			_rectTransform.anchoredPosition = center;
 		}
 
-		private void createSprite(HashSet<Vector2Int> pixelOffsets)
+		private void createSprite(List<Vector2Int> pixelOffsets)
 		{
 			var minX = pixelOffsets.Select(p => p.x).Min();
 			var maxX = pixelOffsets.Select(p => p.x).Max();
@@ -185,7 +187,7 @@ namespace GGJ.Puzzles.Jigsaw
 			foreach (var offset in pixelOffsets)
 			{
 				var pixel = offset - minCorner;
-				colors[pixel.y * width + pixel.x] = Color.white;
+				colors[pixel.y * width + pixel.x] =  Color.white;
 			}
 
 			_texture.SetPixels(colors);
