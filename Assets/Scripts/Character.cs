@@ -9,8 +9,8 @@ namespace GGJ
 
 		private void Awake()
 		{
-			Game.PuzzleManager.OnPuzzleStarted += (_) => CanMove = false;
-			Game.PuzzleManager.OnPuzzleCompleted += (_) => CanMove = true;
+			Game.PuzzleManager.OnPuzzleStarted += OnPuzzleStarted;
+			Game.PuzzleManager.OnPuzzleCompleted += OnPuzzleCompleted;
 		}
 		private void Update()
 		{
@@ -24,6 +24,18 @@ namespace GGJ
 					Game.InteractablesManager.CurrentInteractable.OnInteract();
 				}
 			}
+		}
+
+		private void OnPuzzleStarted(BasePuzzleController puzzle)
+		{
+			CanMove = false;
+			CanInteract = false;
+		}
+
+		private void OnPuzzleCompleted(bool result)
+		{
+			CanMove = true;
+			CanInteract = true;
 		}
 	}
 }

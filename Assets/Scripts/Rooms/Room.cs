@@ -6,7 +6,18 @@ namespace GGJ.Rooms
 {
 	public class Room : BaseBehaviour
 	{
-		public string RoomId { get; set; }
+		[SerializeField] private string roomId = "";
+		public string RoomId
+		{
+			get
+			{
+				return roomId;
+			}
+			set
+			{
+				roomId = value;
+			}
+		}
 		public HashSet<Direction> Directions { get; set; } = new HashSet<Direction>();
 		public HashSet<Direction> CompatibleDirections { get; set; } = new HashSet<Direction>();
 		private List<EntranceSpawnPoint> entrancePositions = new List<EntranceSpawnPoint>();
@@ -51,10 +62,10 @@ namespace GGJ.Rooms
 
 		private void SetPuzzlesIds()
 		{
-			// puzzleIds.Add(Constants.SIMON_ID);
-			// puzzleIds.Add(Constants.JIGSAW_ID);
-			// puzzleIds.Add(Constants.MEMORY_ID);
-			// puzzleIds.Add(Constants.KEYSEQUENCE_ID);
+		    puzzleIds.Add(Constants.SIMON_ID);
+		    puzzleIds.Add(Constants.JIGSAW_ID);
+		    puzzleIds.Add(Constants.MEMORY_ID);
+		    puzzleIds.Add(Constants.KEYSEQUENCE_ID);
 			puzzleIds.Add(Constants.REACTION_SPEED_ID);
 		}
 

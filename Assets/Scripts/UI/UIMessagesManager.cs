@@ -11,12 +11,12 @@ namespace GGJ.UI
 
 		private void Awake()
 		{
-
+			Initialize();
 		}
 
 		private void Initialize()
 		{
-			if (!Utils.GetComponentInChild(transform, "message", out TextMeshProUGUI message))
+			if (!Utils.GetComponentInChild(transform, "message", out message))
 			{
 				Debug.LogError("Component not found!!!");
 			}

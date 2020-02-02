@@ -7,10 +7,9 @@ namespace GGJ.Rooms
 	{
 		public Pair<Room, Room> ConnectedRooms = new Pair<Room, Room>();
 		public Dictionary<Room, Direction> EntranceDirections = new Dictionary<Room, Direction>();
-		public bool IsLockedByDefault { get; private set; } = true;
 		private List<string> unlockConditions = new List<string>();
 		public bool Locked { get; set; } = true;
-
+		private bool runned = false;
 		public void SetDirectionForRoom(Room room, Direction direction)
 		{
 			if (!IsRoomInThisEntrance(room))
@@ -78,23 +77,22 @@ namespace GGJ.Rooms
 
 		private void OnTriggerEnter(Collider other)
 		{
-			if (IsLockedByDefault)
+			if (Locked)
 			{
 				return;
 			}
 
-			else if (Locked && Game.ConditionsManager.CheckMany(unlockConditions))
-			{
-				Locked = false;
-				OnUnlock();
-			}
-
+			OnUnlock();
 			ConnectedRooms.Item1?.gameObject.SetActive(true);
 			ConnectedRooms.Item2?.gameObject.SetActive(true);
 		}
 
 		private void OnUnlock()
 		{
+			if (runned)
+				return;
+
+			runned = true;
 			if (ConnectedRooms.Item1 == null)
 			{
 				Debug.LogError("The first room should always be set, as there can not be an entrance between no rooms");
