@@ -740,8 +740,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00503cbbcb24453386a4d6601b57deb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  difficulty: 7.6
   KeySequence: 
   CompletionTime: 0
   TimePassed: 0
   CorrectKeyCount: 0
-  difficulty: 1

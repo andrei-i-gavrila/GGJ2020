@@ -1,10 +1,8 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
-using Random = UnityEngine.Random;
 
 namespace GGJ.Puzzles.SimonSays
 {
@@ -58,29 +56,33 @@ namespace GGJ.Puzzles.SimonSays
                 return;
             }
 
-            if (Input.GetKeyDown(KeySequence[CorrectKeyCount]))
+            if (arrowKeys.Any(Input.GetKeyDown))
             {
-                var keyDisplay = getKeyDisplay(KeySequence[CorrectKeyCount]);
-                keyDisplay.SetPressed();
-                Invoke(keyDisplay.SetNormal, .5f);
-
-                CorrectKeyCount++;
-                if (CorrectKeyCount == stage)
+                if (Input.GetKeyDown(KeySequence[CorrectKeyCount]))
                 {
-                    stage++;
-                    if (stage > KeySequence.Count)
-                    {
-                        completed();
-                        return;
-                    }
+                    var keyDisplay = getKeyDisplay(KeySequence[CorrectKeyCount]);
+                    keyDisplay.SetPressed();
+                    Invoke(keyDisplay.SetNormal, .5f);
 
-                    TimePassed = 0;
-                    StartCoroutine(showHints());
+                    CorrectKeyCount++;
+                    if (CorrectKeyCount == stage)
+                    {
+                        stage++;
+                        if (stage > KeySequence.Count)
+                        {
+                            completed();
+                            return;
+                        }
+
+                        TimePassed = 0;
+                        StartCoroutine(showHints());
+                    }
                 }
-            }
-            else if (Input.anyKeyDown)
-            {
-                fail();
+                else
+                {
+                    fail();
+                    return;
+                }
             }
         }
 
