@@ -1,13 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using DG.Tweening;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace GGJ.Rooms
 {
 	public class Entrance : BaseBehaviour
 	{
+		[SerializeField] private Transform slidingDoor;
+		private const float OPEN_DURATION = 0.5f;
+		private const float OPEN_DISTANCE = 3f;
+
 		public Pair<Room, Room> ConnectedRooms = new Pair<Room, Room>();
 		public Dictionary<Room, Direction> EntranceDirections = new Dictionary<Room, Direction>();
 		private List<string> unlockConditions = new List<string>();
+		private Tween doorTween;
+
 		public bool Locked { get; set; } = true;
 		private bool runned = false;
 		public void SetDirectionForRoom(Room room, Direction direction)
@@ -82,9 +89,18 @@ namespace GGJ.Rooms
 				return;
 			}
 
+			OpenDoor();
 			OnUnlock();
 			ConnectedRooms.Item1?.gameObject.SetActive(true);
 			ConnectedRooms.Item2?.gameObject.SetActive(true);
+		}
+
+		private void OnTriggerExit(Collider other)
+		{
+			if (Locked)
+				return;
+
+			CloseDoor();
 		}
 
 		private void OnUnlock()
@@ -106,6 +122,32 @@ namespace GGJ.Rooms
 					Game.RoomManager.GenerateRoom(transform.position, this, direction);
 				}
 			}
+		}
+
+		private void OpenDoor()
+		{
+			if (doorTween != null && doorTween.active)
+			{
+				doorTween.Kill();
+				doorTween = null;
+			}
+
+			var remainingDistance = OPEN_DISTANCE - transform.position.y;
+			var remainingTime = OPEN_DURATION * (remainingDistance / OPEN_DISTANCE);
+			slidingDoor.DOMoveY(OPEN_DISTANCE, remainingTime);
+		}
+
+		private void CloseDoor()
+		{
+			if (doorTween != null && doorTween.active)
+			{
+				doorTween.Kill();
+				doorTween = null;
+			}
+
+			var remainingDistance = transform.position.y;
+			var remainingTime = OPEN_DURATION * (remainingDistance / OPEN_DISTANCE);
+			slidingDoor.DOMoveY(0, remainingTime);
 		}
 	}
 }
