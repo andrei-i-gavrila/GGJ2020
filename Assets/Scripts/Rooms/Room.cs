@@ -101,8 +101,7 @@ namespace GGJ.Rooms
 			console.SetPuzzleId(puzzleIds.GetRandomValue());
 
 			//Set the console state
-			if (Game.ConsolesManager.GetNumberOfConsolesWithState(ConsoleState.Interactable) == 0 ||
-				Game.ConsolesManager.GetNumberOfConsolesWithState(ConsoleState.Locked) == 0)
+			if (Game.ConsolesManager.GetNumberOfConsolesWithState(ConsoleState.Interactable) == 0)
 			{
 				console.SetConsoleState(ConsoleState.Interactable);
 			}
@@ -110,6 +109,8 @@ namespace GGJ.Rooms
 			{
 				console.SetConsoleState(Random.value < 0.25f ? ConsoleState.Locked : ConsoleState.Interactable);
 			}
+			console.SetRoom(this);
+
 			Game.ConsolesManager.AddConsole(console);
 		}
 

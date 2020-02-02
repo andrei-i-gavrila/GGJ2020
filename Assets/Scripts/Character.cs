@@ -10,7 +10,7 @@ namespace GGJ
 		private void Awake()
 		{
 			Game.PuzzleManager.OnPuzzleStarted += (_) => CanMove = false;
-			Game.PuzzleManager.OnPuzzleEnd += (_) => CanMove = true;
+			Game.PuzzleManager.OnPuzzleCompleted += (_) => CanMove = true;
 		}
 		private void Update()
 		{
