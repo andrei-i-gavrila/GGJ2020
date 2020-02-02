@@ -10,6 +10,7 @@ namespace GGJ.Rooms
 		[SerializeField] private Material closedLight;
 		[SerializeField] private Material openedLight;
 		[SerializeField] private List<MeshRenderer> Lights;
+		[SerializeField] private List<Light> LightsPoints;
 
 		private const float OPEN_DURATION = 0.3f;
 		private const float OPEN_DISTANCE = 3f;
@@ -21,6 +22,7 @@ namespace GGJ.Rooms
 		private Tween doorTween;
 		private DoorState doorState = DoorState.Closed;
 		private bool locked = true;
+
 		public bool Locked
 		{
 			get
@@ -33,6 +35,7 @@ namespace GGJ.Rooms
 				SetLights();
 			}
 		}
+
 		private bool runned = false;
 
 		private void Awake()
@@ -40,6 +43,11 @@ namespace GGJ.Rooms
 			Locked = true;
 			DoorCloser = GetComponentInChildren<DoorCloser>();
 			DoorCloser.OnExit += CloseDoor;
+		}
+
+		public void Start()
+		{
+			SetLights();
 		}
 
 		public void SetDirectionForRoom(Room room, Direction direction)
@@ -193,6 +201,10 @@ namespace GGJ.Rooms
 				var materials = light.materials;
 				materials[0] = Locked ? closedLight : openedLight;
 				light.materials = materials;
+			}
+			foreach (var light in LightsPoints)
+			{
+				light.color = Locked ? new Color(Constants.RedLightColor.X, Constants.RedLightColor.Y, Constants.RedLightColor.Z) : new Color(Constants.GreenLightColor.X, Constants.GreenLightColor.Y, Constants.GreenLightColor.Z);
 			}
 		}
 	}
