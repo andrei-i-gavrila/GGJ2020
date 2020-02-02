@@ -15,7 +15,7 @@ namespace GGJ.Puzzles
 		public float ChanceToUnlockConsole = 0.3f;
 
 		private Dictionary<string, BasePuzzleController> puzzleControllers = new Dictionary<string, BasePuzzleController>();
-
+		private Console console;
 		private void Awake()
 		{
 			Initialize();
@@ -31,7 +31,7 @@ namespace GGJ.Puzzles
 			HideAllPuzzles();
 		}
 
-		public void StartPuzzle(string id)
+		public void StartPuzzle(string id, Console console)
 		{
 			if (!puzzleControllers.ContainsKey(id))
 			{
@@ -40,6 +40,7 @@ namespace GGJ.Puzzles
 			else
 			{
 				StartPuzzle(puzzleControllers[id]);
+				this.console = console;
 			}
 		}
 
@@ -47,7 +48,7 @@ namespace GGJ.Puzzles
 		{
 			basePuzzleController.gameObject.SetActive(true);
 			basePuzzleController.Open();
-			
+
 			basePuzzleController.OnPuzzleCompleted += OnPuzzleCompletedHandler;
 			basePuzzleController.OnPuzzleCompleted += OnPuzzleCompleted;
 			OnPuzzleStarted?.Invoke(basePuzzleController);
@@ -75,13 +76,17 @@ namespace GGJ.Puzzles
 					if (UnityEngine.Random.value < ChanceToUnlockConsole)
 					{
 						UnlockRandomConsole();
+
 					}
 					else
 					{
 						UnlockRandomEntrance();
 					}
 				}
+
+				console?.SetConsoleState(ConsoleState.Resolved);
 			}
+			console = null;
 		}
 
 		private void UnlockRandomEntrance()
